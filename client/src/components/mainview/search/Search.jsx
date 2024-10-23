@@ -3,7 +3,7 @@ import { IoChevronForward } from "react-icons/io5";
 export default function Search() {
   return (
     <div>
-      <div>image</div>
+      <div className="bg-rdpink w-full h-[300px]"></div>
       <div className="bg-[#081351] p-4">
         <form className="flex flex-col gap-5">
           <input
