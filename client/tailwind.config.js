@@ -19,6 +19,7 @@ export default {
         rdblack: "#0f151a",
         rdpink: "#ff00cd",
         rdblue: "#081351",
+        rdlightBlue : "#1e1ef0",
       },
       screens: {
         s: "575px",
