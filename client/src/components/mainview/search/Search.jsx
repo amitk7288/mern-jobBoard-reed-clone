@@ -71,7 +71,7 @@ export default function Search() {
             <IoChevronForward />
           </a>
         </div>
-        <div className="mx-[35px] py-4 text-lg font-bold text-white">
+        <div className="mx-[35px] py-4 text-lg font-bold text-white hidden md:block">
           <p>Search 150,098 new jobs - 6,055 added in the last 24 hours</p>
         </div>
       </div>
