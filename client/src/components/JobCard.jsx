@@ -13,7 +13,7 @@ import {
 
 export default function JobCard() {
   return (
-    <div className="m-2 flex flex-col gap-2.5 rounded-md border border-[#c8c8c8] px-3 py-2.5 text-[#0f151a] md:w-[75%]">
+    <div className="bg-white flex flex-col gap-2.5 rounded-md border border-[#c8c8c8] px-3 py-2.5 text-[#0f151a] md:w-[100%]">
       <div id="header" className="flex items-center justify-between">
         <div className="text-sm font-bold">
           <div className="flex items-center gap-1">
@@ -70,7 +70,7 @@ export default function JobCard() {
           </div>
           <a
             href="#"
-            className="block w-full max-w-[300px] rounded-[4px] border-2 border-[#081351] px-3 py-1.5 text-center font-medium text-[#081351]"
+            className="block w-full max-w-[300px] rounded-[4px] border-2 border-[#081351] px-3 py-1.5 text-center font-medium text-[#081351] mt-4 bg-white"
           >
             Easy apply
           </a>
