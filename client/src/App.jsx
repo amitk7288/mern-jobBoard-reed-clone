@@ -1,14 +1,14 @@
 import Header from "./components/header/Header";
-import MainView from "./components/mainview/MainView";
+import { Outlet } from "react-router-dom";
 import Footer from "./components/footer/Footer";
 
 function App() {
   return (
-    <div>
+    <>
       <Header />
-      <MainView />
+      <Outlet />
       <Footer />
-    </div>
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {Link} from "react-router-dom";
 import { IoHeartOutline, IoMenuSharp } from "react-icons/io5";
 import logo from "../../assets/reed-logo.webp";
 import SideMenu from "../ui-components/SideMenu";
@@ -7,7 +8,7 @@ export default function Header() {
   const [isMobMenuOpen, setIsMobMenuOpen] = useState(false);
 
   return (
-    <>
+    <div className="border-b fixed bg-white w-full z-[1000]">
       <div className="mx-auto max-w-[1280px]">
         <div className="flex h-[50px] items-center justify-between border-b-slate-300 px-4 lg:h-[60px]">
           <div className="flex items-center gap-5 xl:gap-10">
@@ -15,10 +16,12 @@ export default function Header() {
               className="cursor-pointer text-xl lg:hidden"
               onClick={() => setIsMobMenuOpen(true)}
             />
-            <img src={logo} alt="Reed" className="h-[30px]" />
+            <Link to={`/`}>
+              <img src={logo} alt="Reed" className="h-[30px]" />
+            </Link>
             <a
               href="#"
-              className="after:border-rdpink hidden h-[50px] flex-col justify-end gap-2 font-medium after:block after:w-full after:border-b-[5px] after:content-[''] md:flex lg:h-[60px] lg:gap-[13px]"
+              className="hidden h-[50px] flex-col justify-end gap-2 font-medium after:block after:w-full after:border-b-[5px] after:border-rdpink after:content-[''] md:flex lg:h-[60px] lg:gap-[13px]"
             >
               Jobs
             </a>
@@ -40,9 +43,9 @@ export default function Header() {
               </a>
             </div>
             <div className="flex items-center gap-4">
-              <a href="#" className="font-medium">
+              <Link to={`/login`} className="font-medium">
                 Sign in
-              </a>
+              </Link>
             </div>
             <div className="flex items-center gap-1">
               <IoHeartOutline className="text-xl" />
@@ -58,13 +61,13 @@ export default function Header() {
           <nav className="flex flex-col gap-1 text-white">
             <a
               href="#"
-              className="before:border-rdpink flex h-[50px] w-full items-center justify-start gap-8 py-2 pr-[55px] font-medium before:block before:h-[100%] before:border-l-[6px] before:content-['']"
+              className="flex h-[50px] w-full items-center justify-start gap-8 py-2 pr-[55px] font-medium before:block before:h-[100%] before:border-l-[6px] before:border-rdpink before:content-['']"
             >
               <strong className="">Jobs</strong>
             </a>
             <a
               href="#"
-              className="flex h-[50px] w-full items-center justify-start py-2 gap-8 pr-[55px] font-medium before:block before:h-[100%]"
+              className="flex h-[50px] w-full items-center justify-start gap-8 py-2 pr-[55px] font-medium before:block before:h-[100%]"
             >
               <div className="flex items-center gap-1">
                 <p className="font-normal">Recruting?</p>
@@ -74,6 +77,6 @@ export default function Header() {
           </nav>
         </SideMenu>
       )}
-    </>
+    </div>
   );
 }
