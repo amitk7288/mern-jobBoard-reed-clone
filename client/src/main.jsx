@@ -11,6 +11,8 @@ import ErrorPage from './components/ui-components/ErrorPage.jsx';
 import MainView from './components/mainview/MainView.jsx';
 import JobResultsPage from './routes/JobResultsPage.jsx';
 import UserSignIn from './routes/UserSignIn.jsx';
+import UserHome from './routes/logged-in-user/UserHome.jsx';
+import UserProfile from './routes/logged-in-user/UserProfile.jsx';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
           {
             path: "login",
             element: <UserSignIn />,
+          },
+          {
+            path: "userhome",
+            element: <UserHome />,
+          },
+          {
+            path: "profile",
+            element: <UserProfile />,
           },
         ],
       },
