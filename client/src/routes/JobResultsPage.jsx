@@ -17,8 +17,10 @@ export default function JobResultsPage() {
 
   return (
     <>
-      <div className="hidden lg:block lg:max-w-[1280px] mx-auto lg:py-[30px] lg:px-[30px]">
-        <p className="pt-[15px] text-lg font-bold lg:text-xl lg:pt-0 lg:relative lg:bottom-[10px]">Search</p>
+      <div className="mx-auto hidden lg:block lg:max-w-[1280px] lg:px-[30px] lg:py-[30px]">
+        <p className="pt-[15px] text-lg font-bold lg:relative lg:bottom-[10px] lg:pt-0 lg:text-xl">
+          Search
+        </p>
         <form className="flex flex-col gap-5 md:flex-row md:items-center">
           <div className="md:basis-[40%]">
             <label
@@ -66,15 +68,12 @@ export default function JobResultsPage() {
             <p>Developer jobs</p>
           </div>
         </div>
-        <div className="bg-[#f8f8f8] px-3 py-5 2xl:px-[50px] border-t">
-          <div className="py-[20px] md:px-4">
+        <div className="border-t bg-[#f8f8f8] px-3 py-5 2xl:px-[50px]">
+          <div className="mx-auto block max-w-[1280px] py-[20px]">
             <h1 className="text-lg font-bold">4,789 Developer Jobs</h1>
           </div>
-          <div className="md:flex md:gap-1">
-            <div
-              id=""
-              className="basis-[40%] md:px-4 lg:basis-[30%] xl:basis-[20%]"
-            >
+          <div className="mx-auto max-w-[1280px] md:flex md:gap-6">
+            <div id="" className="basis-[35%] lg:basis-[30%] xl:basis-[20%]">
               <div className="flex items-center justify-center gap-5 pb-[20px] md:flex-col">
                 <button className="flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] bg-white px-3 py-1.5 text-center font-medium text-[#081351] md:hidden">
                   <HiAdjustmentsVertical className="text-xl" />
@@ -264,7 +263,7 @@ export default function JobResultsPage() {
                 </div>
               </div>
             </div>
-            <div className="basis-[60%]">
+            <div className="basis-[80%]">
               <div id="main" className="flex flex-col gap-3">
                 <JobCard />
                 <JobCard />
