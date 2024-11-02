@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   IoHeartOutline,
   IoChevronUp,
@@ -29,9 +30,9 @@ export default function JobCard() {
       <div className="md:flex md:justify-between">
         <div id="body" className="flex flex-col gap-2.5">
           <div>
-            <p className="jobtitle text-lg font-bold text-[#1e1ef0] md:text-2xl">
+            <Link to={`/jobpage`} className="jobtitle text-lg font-bold text-[#1e1ef0] md:text-2xl">
               Senior Software Developer
-            </p>
+            </Link>
             <p className="date text-sm font-normal">
               13 septemrber by{" "}
               <a href="#" className="font-medium text-[#1e1ef0]">

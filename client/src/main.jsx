@@ -13,6 +13,7 @@ import JobResultsPage from './routes/JobResultsPage.jsx';
 import UserSignIn from './routes/UserSignIn.jsx';
 import UserHome from './routes/logged-in-user/UserHome.jsx';
 import UserProfile from './routes/logged-in-user/profile/UserProfile.jsx';
+import JobPage from './routes/JobPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           {
             path: "results",
             element: <JobResultsPage />,
+          },
+          {
+            path: "jobpage",
+            element: <JobPage />,
           },
           {
             path: "login",
