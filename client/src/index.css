@@ -3,3 +3,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.label-style {
+  color: #0f151a;
+  font-weight: 700;
+}
+.input-style {
+  border-radius: 6px;
+  padding: 10px 20px;
+  border: 1px solid #0f151a;
+}

@@ -1,7 +1,7 @@
 import SectionCompleted from "./SectionCompleted";
 import Button from "../../components/ui-components/Button";
 import { Link, useLocation } from "react-router-dom";
-import { FiCircle, FiCheckCircle } from "react-icons/fi";
+import { LuCircle, LuCheckCircle } from "react-icons/lu";
 
 export default function ProfileComplete() {
   const location = useLocation();
@@ -22,12 +22,28 @@ export default function ProfileComplete() {
       </div>
       <ul className="flex flex-col gap-3">
         <li className="flex items-center justify-between">
-          <p className="text-sm font-bold">CV upload</p>
-          <FiCircle className="text-xl text-green-700" />
+          <p className="text-sm font-bold">About you</p>
+          <LuCircle className="text-xl text-green-700" />
         </li>
         <li className="flex items-center justify-between">
-          <p className="text-sm font-bold">About you</p>
-          <FiCheckCircle className="text-xl text-green-700" />
+          <p className="text-sm font-bold">CV Upload</p>
+          <LuCheckCircle className="text-xl text-green-700" />
+        </li>
+        <li className="flex items-center justify-between">
+          <p className="text-sm font-bold">Looking for</p>
+          <LuCheckCircle className="text-xl text-green-700" />
+        </li>
+        <li className="flex items-center justify-between">
+          <p className="text-sm font-bold">Status and availability</p>
+          <LuCheckCircle className="text-xl text-green-700" />
+        </li>
+        <li className="flex items-center justify-between">
+          <p className="text-sm font-bold">Work experience</p>
+          <LuCheckCircle className="text-xl text-green-700" />
+        </li>
+        <li className="flex items-center justify-between">
+          <p className="text-sm font-bold">Qualifications</p>
+          <LuCheckCircle className="text-xl text-green-700" />
         </li>
       </ul>
       {!isProfile && (
