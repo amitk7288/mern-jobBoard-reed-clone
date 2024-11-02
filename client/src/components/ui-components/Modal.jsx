@@ -36,7 +36,7 @@ export default function Modal({ children, closeModal }) {
             className="fixed inset-0 z-[100] flex items-center justify-center rounded-md bg-transparent"
             aria-modal
           >
-            <div className="relative w-[90vw] rounded-md border border-gray-200 bg-white p-4 shadow-lg sm:h-auto sm:w-[600px] dark:border-drkbrd dark:bg-drkbg dark:text-drkcol">
+            <div className="relative w-[90vw] rounded-md border border-gray-200 bg-white p-4 shadow-lg sm:h-auto sm:w-[600px]">
               <PiXBold
                 className="absolute right-4 cursor-pointer text-xl text-slate-500 dark:text-drkcol"
                 onClick={closeModal}

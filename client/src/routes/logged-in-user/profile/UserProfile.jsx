@@ -1,13 +1,18 @@
 import { useState } from "react";
-import ModalDropDown from "../../components/ui-components/ModalDropDown";
-import MobileJobSearch from "../MobileJobSearch";
-import InfoPod from "../../components/ui-components/InfoPod";
-import ProfileComplete from "../../routes/logged-in-user/ProfileComplete";
-import About from "./About";
+import ModalDropDown from "../../../components/ui-components/ModalDropDown";
+import MobileJobSearch from "../../MobileJobSearch";
+import InfoPod from "../../../components/ui-components/InfoPod";
+import ProfileComplete from "../ProfileComplete";
+import About from "../About";
+import LookingFor from "./widgets/LookingFor";
+import Status from "./widgets/Status";
+import Experience from "./widgets/Experience";
+import Qualifications from "./widgets/Qualifications";
 import {
   HiMagnifyingGlass,
 } from "react-icons/hi2";
-import { LuPenSquare, LuPlusCircle } from "react-icons/lu";
+import { LuPlusCircle } from "react-icons/lu";
+
 
 export default function UserProfile() {
   const [isOpen, setIsOpen] = useState(false);
@@ -74,32 +79,16 @@ export default function UserProfile() {
                 <ProfileComplete />
               </InfoPod>
             </div>
-            <div className="flex basis-[80%] flex-col gap-3">
+            <div className="flex basis-[80%] flex-col gap-3 mt-3 md:mt-0">
               <InfoPod
                 title={`CV`}
                 headerLink={`Add`}
                 headerIcon={<LuPlusCircle />}
               />
-              <InfoPod
-                title={`Looking for`}
-                headerLink={`Edit`}
-                headerIcon={<LuPenSquare />}
-              />
-              <InfoPod
-                title={`Status and availability`}
-                headerLink={`Edit`}
-                headerIcon={<LuPenSquare />}
-              />
-              <InfoPod
-                title={`Work Experience`}
-                headerLink={`Add work experience`}
-                headerIcon={<LuPlusCircle />}
-              />
-              <InfoPod
-                title={`Qualifications`}
-                headerLink={`Add qualification`}
-                headerIcon={<LuPlusCircle />}
-              />
+              <LookingFor />
+              <Status />
+              <Experience />
+              <Qualifications />
             </div>
           </div>
         </div>
