@@ -4,12 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 
-.label-style {
-  color: #0f151a;
-  font-weight: 700;
+@layer utilities {
+  .label-style {
+    color: #0f151a;
+    font-weight: 600;
+  }
+  .input-style {
+    border-radius: 6px;
+    padding: 10px 15px;
+    border: 1px solid #0f151a;
+  }
+  .styled-select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance:none;
 }
-.input-style {
-  border-radius: 6px;
-  padding: 10px 20px;
-  border: 1px solid #0f151a;
+}
+
+.slick-slide > div {
+ margin-right: 20px; 
 }

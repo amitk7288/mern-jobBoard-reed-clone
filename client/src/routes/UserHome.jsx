@@ -1,21 +1,20 @@
 import { useState } from "react";
-import ModalDropDown from "../../../components/ui-components/ModalDropDown";
-import MobileJobSearch from "../../MobileJobSearch";
-import InfoPod from "../../../components/ui-components/InfoPod";
-import ProfileComplete from "../ProfileComplete";
-import About from "../About";
-import LookingFor from "./widgets/LookingFor";
-import Status from "./widgets/Status";
-import Experience from "./widgets/Experience";
-import Qualifications from "./widgets/Qualifications";
+import InfoPod from "../components/ui-components/InfoPod";
+import ModalDropDown from "../components/ui-components/ModalDropDown";
+import MobileJobSearch from "../routes/MobileJobSearch";
+import CardList from "../components/ui-components/CardList";
+import About from "../components/ui-components/logged-in-user/About";
+import SavedJobs from "../components/ui-components/logged-in-user/SavedJobs";
+
 import {
   HiMagnifyingGlass,
 } from "react-icons/hi2";
-import { LuPlusCircle } from "react-icons/lu";
+import ProfileComplete from "./logged-in-user/ProfileComplete";
+import AppliedJobs from "./logged-in-user/AppliedJobs";
 
-
-export default function UserProfile() {
+export default function UserHome() {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <div className="mx-auto hidden lg:block lg:max-w-[1280px] lg:px-[30px] lg:py-[30px]">
@@ -69,26 +68,26 @@ export default function UserProfile() {
             <p>Developer jobs</p>
           </div>
         </div>
+
         <div className="border-t bg-[#f8f8f8] px-3 py-5 2xl:px-[50px]">
           <div className="mx-auto max-w-[1280px] md:flex md:gap-6">
-            <div
-              className="flex basis-[35%] flex-col gap-3 lg:basis-[30%] xl:basis-[30%]"
-            >
-              <About />
-              <InfoPod title={`Profile`}>
-                <ProfileComplete />
-              </InfoPod>
+            <div id="" className="basis-[35%] lg:basis-[30%] xl:basis-[30%]">
+              <div className="flex flex-col gap-3">
+                <About />
+                <InfoPod title={`Profile`}>
+                  <ProfileComplete />
+                </InfoPod>
+              </div>
             </div>
-            <div className="flex basis-[80%] flex-col gap-3 mt-3 md:mt-0">
-              <InfoPod
-                title={`CV`}
-                headerLink={`Add`}
-                headerIcon={<LuPlusCircle />}
-              />
-              <LookingFor />
-              <Status />
-              <Experience />
-              <Qualifications />
+            <div className="basis-[80%]">
+              <div id="main" className="flex flex-col gap-3">
+                <CardList title={`Saved Jobs`}>
+                  <SavedJobs />
+                </CardList>
+                <CardList title={`Jobs Applied to`}>
+                  <AppliedJobs />
+                </CardList>
+              </div>
             </div>
           </div>
         </div>

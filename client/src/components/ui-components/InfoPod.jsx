@@ -13,7 +13,7 @@ export default function InfoPod({title, headerIcon, headerLink, children, modalC
             className="flex cursor-pointer items-center gap-2 font-medium"
             onClick={() => setIsOpen(true)}
           >
-            <p className="text-rdlightBlue">{headerLink}</p>
+            <p className="text-rdlightBlue hidden s:block">{headerLink}</p>
             <div className="text-rdlightBlue">{headerIcon}</div>
           </div>
         </div>

@@ -10,11 +10,11 @@ export default function MainView() {
     <div className="pt-[50px] lg:pt-[60px]">
       <Outlet />
       {location.pathname === "/" && (
-        <>
+        <div className="flex flex-col gap-10 pb-10">
           <Search />
           <Trending />
           <SectorsLocations />
-        </>
+        </div>
       )}
     </div>
   );
