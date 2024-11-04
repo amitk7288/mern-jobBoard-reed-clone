@@ -1,16 +1,16 @@
 import { useState } from "react";
-import InfoPod from "../../components/ui-components/InfoPod";
-import ModalDropDown from "../../components/ui-components/Modal";
-import MobileJobSearch from "../MobileJobSearch";
-import CardList from "../../components/ui-components/CardList";
+import InfoPod from "../InfoPod";
+import ModalDropDown from "../ModalDropDown";
+import MobileJobSearch from "../../../routes/MobileJobSearch";
+import CardList from "../CardList";
 import About from "./About";
+import SavedJobs from "./SavedJobs";
 
 import {
   HiMagnifyingGlass,
-  HiOutlinePhone,
-  HiOutlineEnvelope,
 } from "react-icons/hi2";
 import ProfileComplete from "./ProfileComplete";
+import AppliedJobs from "./AppliedJobs";
 
 export default function UserHome() {
   const [isOpen, setIsOpen] = useState(false);
@@ -81,8 +81,12 @@ export default function UserHome() {
             </div>
             <div className="basis-[80%]">
               <div id="main" className="flex flex-col gap-3">
-                <CardList title={`Saved Jobs`}></CardList>
-                <CardList title={`Jobs Applied to`}></CardList>
+                <CardList title={`Saved Jobs`}>
+                  <SavedJobs />
+                </CardList>
+                <CardList title={`Jobs Applied to`}>
+                  <AppliedJobs />
+                </CardList>
               </div>
             </div>
           </div>

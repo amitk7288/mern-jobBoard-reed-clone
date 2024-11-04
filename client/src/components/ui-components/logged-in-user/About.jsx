@@ -1,4 +1,4 @@
-import InfoPod from "../../components/ui-components/InfoPod"
+import InfoPod from "../InfoPod"
 import AboutModal from "./profile/widgets/modal-content/AboutModal";
 import { LuPenSquare } from "react-icons/lu";
 import {

@@ -9,7 +9,7 @@ export default function Footer() {
   };
 
   return (
-    <div className="bg-rdblue lg:grid lg:justify-center lg:py-[45px]">
+    <div className="bg-rdblue lg:grid lg:justify-center lg:py-[45px] pt-10">
       <ul className="flex flex-col justify-between lg:hidden">
         <li className="w-full border-b border-b-[#535a86]">
           <nav>

@@ -45,7 +45,7 @@ export default function UserSignIn() {
 
   return (
     <div className="flex flex-col items-center lg:bg-[#f8f8f8]">
-      <div className="my-10 w-screen lg:rounded-lg lg:border bg-white px-[20px] lg:py-[30px] lg:w-[500px]">
+      <div className="my-10 w-screen bg-white px-[20px] lg:w-[500px] lg:rounded-lg lg:border lg:py-[30px]">
         <div className="grid grid-cols-2 gap-5">
           <button
             className={`border-b p-4 font-bold text-rdblack ${!showReg && `border-b-4 border-b-rdpink`}`}
@@ -129,8 +129,8 @@ export default function UserSignIn() {
                 <span></span>
               </div>
               <div>
-                <div className="rounded-md border border-rdblack px-8 py-[15px]">
-                  <div className="flex cursor-pointer items-center justify-center gap-3">
+                <div className="cursor-pointer rounded-md border border-rdblack px-8 py-[15px]">
+                  <div className="flex items-center justify-center gap-3">
                     <img src={google} alt="Google" className="h-5 w-5" />
                     <p className="font-bold">Continue with Google</p>
                   </div>
@@ -211,8 +211,8 @@ export default function UserSignIn() {
                 <span></span>
               </div>
               <div>
-                <div className="rounded-md border border-rdblack px-8 py-[15px]">
-                  <div className="flex cursor-pointer items-center justify-center gap-3">
+                <div className="cursor-pointer rounded-md border border-rdblack px-8 py-[15px]">
+                  <div className="flex items-center justify-center gap-3">
                     <img src={google} alt="Google" className="h-5 w-5" />
                     <p className="font-bold">Continue with Google</p>
                   </div>

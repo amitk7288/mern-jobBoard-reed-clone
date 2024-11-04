@@ -1,5 +1,6 @@
-import InfoPod from "../../../../components/ui-components/InfoPod";
-import InfoText from "../../../../components/ui-components/InfoText";
+import InfoPod from "../../../../ui-components/InfoPod";
+import InfoText from "../../../../ui-components/InfoText";
+import LookingForModal from "./modal-content/LookingFor"
 import { LuPenSquare } from "react-icons/lu";
 
 export default function LookingFor() {
@@ -8,6 +9,7 @@ export default function LookingFor() {
       title={`Looking for`}
       headerLink={`Edit`}
       headerIcon={<LuPenSquare />}
+      modalContent={<LookingForModal />}
     >
       <ul className="flex flex-col gap-3">
         <InfoText title={`Desired job title`} body={`React`} />

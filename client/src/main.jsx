@@ -11,8 +11,8 @@ import ErrorPage from './components/ui-components/ErrorPage.jsx';
 import MainView from './components/mainview/MainView.jsx';
 import JobResultsPage from './routes/JobResultsPage.jsx';
 import UserSignIn from './routes/UserSignIn.jsx';
-import UserHome from './routes/logged-in-user/UserHome.jsx';
-import UserProfile from './routes/logged-in-user/profile/UserProfile.jsx';
+import UserHome from './components/ui-components/logged-in-user/UserHome.jsx';
+import UserProfile from './components/ui-components/logged-in-user/profile/UserProfile.jsx';
 import JobPage from './routes/JobPage.jsx';
 
 const router = createBrowserRouter([
