@@ -176,22 +176,36 @@ export default function UserSignIn() {
                 <div className="flex items-center justify-between rounded-md border border-rdblack py-3 pl-5 pr-5">
                   <input
                     type={`${!showPass ? `text` : `password`}`}
-                    name="pass register"
-                    id="pass register"
+                    name="pass-register"
+                    id="pass-register"
                     placeholder="Password"
                     className="h-full w-full border-0 outline-none ring-0"
                   />
                   {showPass ? (
                     <GoEyeClosed
-                      className="text-xl"
+                      className="cursor-pointer text-xl text-rdlightBlue"
                       onClick={() => setShowPass((prevState) => !prevState)}
                     />
                   ) : (
                     <GoEye
-                      className="text-xl"
+                      className="cursor-pointer text-xl text-rdlightBlue"
                       onClick={() => setShowPass((prevState) => !prevState)}
                     />
                   )}
+                </div>
+                <span className="hidden text-sm font-medium text-[#e32424]">
+                  Please enter a password
+                </span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between rounded-md border border-rdblack py-3 pl-5 pr-5">
+                  <input
+                    type={`${!showPass ? `text` : `password`}`}
+                    name="pass-confirm"
+                    id="pass-confirm"
+                    placeholder="Confirm password"
+                    className="h-full w-full border-0 outline-none ring-0"
+                  />
                 </div>
                 <span className="hidden text-sm font-medium text-[#e32424]">
                   Please enter a password

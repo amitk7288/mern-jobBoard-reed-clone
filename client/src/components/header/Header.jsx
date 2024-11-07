@@ -34,14 +34,6 @@ export default function Header() {
             </a>
           </div>
           <div className="flex items-center gap-4 xl:gap-10">
-            <div className="flex items-center">
-              <a
-                href="#"
-                className="hidden w-full max-w-[300px] rounded-[4px] border-2 border-[#081351] px-3 py-1 text-center font-medium text-[#081351] md:block"
-              >
-                Register CV
-              </a>
-            </div>
             <div className="flex items-center gap-4">
               <Link to={`/login`} className="font-medium">
                 Sign in
