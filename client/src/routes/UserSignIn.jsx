@@ -1,53 +1,35 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
+import { useLoginMutation } from "../features/usersApiSlice";
+import { setCredentials } from "../features/authSlice";
 import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 
 export default function UserSignIn() {
-  const navigate = useNavigate();
-  const [showPass, setShowPass] = useState(false);
-  const [loginInfo, setLoginInfo] = useState({
-    email: "",
-    password: "",
-  });
-
   const signInForm = useRef(null);
 
-  const handleChange = (e) => {
-    setLoginInfo({ ...loginInfo, [e.target.id]: e.target.value });
-  };
+  const [showPass, setShowPass] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
 
   const handleLoginUser = async (e) => {
     e.preventDefault();
-
-    // attempt to login user
+    
     try {
-        const baseUrl = window.location.origin; // This gets the current origin (e.g., http://localhost:3000)
-        const apiUrl = `${baseUrl}/api/users/auth`; // Full URL
-        console.log(`Fetch URL: ${apiUrl}`);
-
-        const res = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginInfo),
-        });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        console.log("User logged in successfully:", data);
-        signInForm.current.reset();
-        navigate(`/`);
-      } else {
-        console.error("Error:", data.message || "Registration failed");
-      }
-    } catch (error) {
-      console.error("Error during registration:", error);
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/");
+    } catch (err) {
+      console.log("there was an error");
     }
-  };
+  }
 
   return (
     <div className="flex flex-col items-center lg:bg-[#f8f8f8]">
@@ -70,7 +52,7 @@ export default function UserSignIn() {
                 id="email"
                 placeholder="Email address"
                 className="rounded-md border border-rdblack py-3 pl-5 pr-10"
-                onChange={handleChange}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <span className="hidden text-sm font-medium text-[#e32424]">
                 Please enter a valid email
@@ -85,7 +67,7 @@ export default function UserSignIn() {
                   placeholder="Password"
                   className="h-full w-full border-0 outline-none ring-0"
                   autoComplete="true"
-                  onChange={handleChange}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 {!showPass ? (
                   <GoEyeClosed
@@ -111,7 +93,7 @@ export default function UserSignIn() {
               type="submit"
               className="rounded-md bg-[#cf04a9] px-8 py-[15px] text-center font-medium text-white hover:bg-[#9f0885]"
             >
-              Continue
+              {isLoading ? "Loading..." : "Continue"}
             </button>
           </form>
           <div id="other">
