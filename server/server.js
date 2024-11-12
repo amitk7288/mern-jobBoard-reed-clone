@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
@@ -16,6 +17,8 @@ const app = express();
 app.use(express.json());
 // allows us to submit form data
 app.use(express.urlencoded({extended: true}));
+
+app.use(cors());
 
 app.use(cookieParser());
 
