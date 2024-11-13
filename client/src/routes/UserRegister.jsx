@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
 import { useRegisterMutation } from "../features/usersApiSlice";
-import { setCredentials } from "../features/authSlice";
+import { registerUser } from "../features/authSlice";
 import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 // import validator from "validator";
@@ -30,7 +30,7 @@ function UserRegister() {
     } else {
       try {
         const res = await register({ name, email, password }).unwrap();
-        dispatch(setCredentials({...res}));
+        dispatch(registerUser({ ...res }));
         navigate("/login");
       } catch (err) {
          console.log('there was an error');

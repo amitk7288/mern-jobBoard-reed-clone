@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
 import { useLoginMutation } from "../features/usersApiSlice";
-import { setCredentials } from "../features/authSlice";
+import { loginUser } from "../features/authSlice";
 import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 
@@ -24,7 +24,7 @@ export default function UserSignIn() {
     
     try {
       const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
+      dispatch(loginUser({ ...res }));
       navigate("/");
     } catch (err) {
       console.log("there was an error");
@@ -93,7 +93,7 @@ export default function UserSignIn() {
               type="submit"
               className="rounded-md bg-[#cf04a9] px-8 py-[15px] text-center font-medium text-white hover:bg-[#9f0885]"
             >
-              {isLoading ? "Loading..." : "Continue"}
+              {isLoading ? "Loggin you in..." : "Continue"}
             </button>
           </form>
           <div id="other">
