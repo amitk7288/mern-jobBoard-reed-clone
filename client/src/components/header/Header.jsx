@@ -1,14 +1,49 @@
 import { useState } from "react";
-import {Link} from "react-router-dom";
-import { IoHeartOutline, IoMenuSharp } from "react-icons/io5";
+import {Link, useNavigate} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import { logoutUser } from "../../features/authSlice";
+import { useLogoutMutation } from "../../features/usersApiSlice";
+import {
+  IoHeartOutline,
+  IoMenuSharp,
+  IoChevronDown,
+  IoChevronUp,
+  IoPersonOutline,
+} from "react-icons/io5";
 import logo from "../../assets/reed-logo.webp";
 import SideMenu from "../ui-components/SideMenu";
+import DropMenu from "../ui-components/logged-in-user/DropMenu";
 
 export default function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [isMobMenuOpen, setIsMobMenuOpen] = useState(false);
 
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const [logout] = useLogoutMutation();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    try {
+      await logout().unwrap();
+      dispatch(logoutUser());
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
+
+  const handleViewProfile = (e) => {
+    e.preventDefault();
+    navigate("/profile")
+  }
+
   return (
-    <div className="border-b fixed bg-white w-full z-[1000]">
+    <div className="fixed z-[1000] w-full border-b bg-white">
       <div className="mx-auto max-w-[1280px]">
         <div className="flex h-[50px] items-center justify-between border-b-slate-300 px-4 lg:h-[60px]">
           <div className="flex items-center gap-5 xl:gap-10">
@@ -17,7 +52,7 @@ export default function Header() {
               onClick={() => setIsMobMenuOpen(true)}
             />
             <Link to={`/`}>
-              <img src={logo} alt="Reed" className="h-[30px]" />
+              <img src={logo} alt="Reed" className="h-[30px] object-contain" />
             </Link>
             <a
               href="#"
@@ -33,18 +68,58 @@ export default function Header() {
               <span className="font-medium">Post a job</span>
             </a>
           </div>
-          <div className="flex items-center gap-4 xl:gap-10">
-            <div className="flex items-center gap-4">
-              <Link to={`/login`} className="font-medium">
-                Sign in
-              </Link>
-            </div>
-            <div className="flex items-center gap-1">
-              <IoHeartOutline className="text-xl" />
-              <a href="#" className="hidden font-medium md:block">
-                Saved jobs
-              </a>
-            </div>
+          <div className="flex h-[50px] items-center gap-5 lg:h-[60px] xl:gap-10">
+            {userInfo ? (
+              <>
+                <div className="flex items-center gap-1">
+                  <IoHeartOutline className="text-xl" />
+                  <a href="#" className="hidden font-medium md:block">
+                    Saved jobs
+                  </a>
+                </div>
+                <div className="flex items-center gap-1">
+                  <DropMenu
+                    trigger={
+                      <div className="flex cursor-pointer items-center gap-1 p-1">
+                        <IoPersonOutline className="text-xl" />
+                        <p className="font-medium md:block">{userInfo.email}</p>
+                        <IoChevronDown className="text-xl" />
+                      </div>
+                    }
+                    pos={`right-[0px] top-[38px]`}
+                  >
+                    <nav className="flex flex-col items-start cursor-pointer">
+                      <button
+                        onClick={handleViewProfile}
+                        className="relative flex w-full items-center gap-x-2 border-b border-gray-200 bg-transparent px-1.5 py-2 font-medium hover:bg-[#f3f3fe]"
+                      >
+                        Profile
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="relative flex w-full items-center gap-x-2 bg-transparent px-1.5 py-2 font-medium hover:bg-[#f3f3fe]"
+                      >
+                        Log out
+                      </button>
+                    </nav>
+                  </DropMenu>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-4">
+                  <Link to={`/login`} className="font-medium">
+                    Sign in
+                  </Link>
+                </div>
+                <div className="flex items-center gap-1">
+                  <IoHeartOutline className="text-xl" />
+                  <a href="#" className="hidden font-medium md:block">
+                    Saved jobs
+                  </a>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

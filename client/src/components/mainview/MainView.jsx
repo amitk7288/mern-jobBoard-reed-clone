@@ -1,20 +1,20 @@
 import {Outlet, useLocation} from "react-router-dom";
-import Search from "./search/Search";
-import Trending from "./trending/Trending";
-import SectorsLocations from "./sectors-locations/SectorsLocations";
+import Home from "../../routes/Home";
+import UserHome from "../../routes/UserHome";
+import { useSelector } from "react-redux";
 
 export default function MainView() {
   const location = useLocation();
+
+  const {userInfo} = useSelector((state) => state.auth);
 
   return (
     <div className="pt-[50px] lg:pt-[60px]">
       <Outlet />
       {location.pathname === "/" && (
-        <div className="flex flex-col gap-10 pb-10">
-          <Search />
-          <Trending />
-          <SectorsLocations />
-        </div>
+        <>
+          {userInfo !== null ? <UserHome /> : <Home />}
+        </>
       )}
     </div>
   );

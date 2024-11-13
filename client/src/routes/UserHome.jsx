@@ -9,8 +9,8 @@ import SavedJobs from "../components/ui-components/logged-in-user/SavedJobs";
 import {
   HiMagnifyingGlass,
 } from "react-icons/hi2";
-import ProfileComplete from "./logged-in-user/ProfileComplete";
-import AppliedJobs from "./logged-in-user/AppliedJobs";
+import ProfileComplete from "../components/ui-components/logged-in-user/ProfileComplete";
+import AppliedJobs from "../components/ui-components/logged-in-user/AppliedJobs";
 
 export default function UserHome() {
   const [isOpen, setIsOpen] = useState(false);
