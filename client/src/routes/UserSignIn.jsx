@@ -6,27 +6,59 @@ import { useLoginMutation } from "../features/usersApiSlice";
 import { loginUser } from "../features/authSlice";
 import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
+import validator from 'validator';
 
 export default function UserSignIn() {
   const signInForm = useRef(null);
 
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
+  const [passError, setPassError] = useState(false);
+  const [formError, setFormError] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [login, { isLoading }] = useLoginMutation();
 
+  const emailOnChange = (e) => {
+    setEmail(e.target.value);
+  }
+  const handleEmailCheck = () => {
+    if (validator.isEmail(email)) {
+      setEmailError(false);
+    } else if (!validator.isEmail(email)) {
+      setEmailError(true);
+    }
+  }
+
+  const passOnChange = (e) => {
+    setPassword(e.target.value);
+  };
+  const handlePassCheck = () => {
+    if (password.trim() === "") {
+      setPassError(true);
+    } else if (password.trim() !== "") {
+      setPassError(false);
+    }
+  };
+
   const handleLoginUser = async (e) => {
     e.preventDefault();
-    
+
+    handleEmailCheck();
+    handlePassCheck();
+
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(loginUser({ ...res }));
       navigate("/");
     } catch (err) {
+      if (email.trim() !== "" || password.trim() !== "") {
+        setFormError(true);
+      }
       console.log("there was an error");
     }
   }
@@ -51,15 +83,20 @@ export default function UserSignIn() {
                 name="email"
                 id="email"
                 placeholder="Email address"
-                className="rounded-md border border-rdblack py-3 pl-5 pr-10"
-                onChange={(e) => setEmail(e.target.value)}
+                className={`rounded-md border border-rdblack py-3 pl-5 pr-10 ${emailError && `border-red-600`}`}
+                onChange={emailOnChange}
+                onKeyDown={handleEmailCheck}
               />
-              <span className="hidden text-sm font-medium text-[#e32424]">
-                Please enter a valid email
-              </span>
+              {emailError && (
+                <span className="text-sm font-medium text-[#e32424]">
+                  Please enter your email address
+                </span>
+              )}
             </div>
             <div className="flex flex-col gap-1">
-              <div className="flex items-center justify-between rounded-md border border-rdblack py-3 pl-5 pr-5">
+              <div
+                className={`flex items-center justify-between rounded-md border border-rdblack py-3 pl-5 pr-5 ${passError && `border-red-600`}`}
+              >
                 <input
                   type={`${showPass ? `text` : `password`}`}
                   name="password"
@@ -67,7 +104,8 @@ export default function UserSignIn() {
                   placeholder="Password"
                   className="h-full w-full border-0 outline-none ring-0"
                   autoComplete="true"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={passOnChange}
+                  onKeyDown={handlePassCheck}
                 />
                 {!showPass ? (
                   <GoEyeClosed
@@ -81,17 +119,26 @@ export default function UserSignIn() {
                   />
                 )}
               </div>
-
-              <span className="hidden text-sm font-medium text-[#e32424]">
-                Please enter a password
-              </span>
-              <a href="#" className="mt-1 text-sm font-medium text-rdlightBlue">
+              {passError && (
+                <span className="text-sm font-medium text-[#e32424]">
+                  Please enter your password
+                </span>
+              )}
+              <a
+                href="#"
+                className="mt-1 text-right text-sm font-medium text-rdlightBlue"
+              >
                 Forgotten password?
               </a>
+              {formError && (
+                <span className="text-sm font-medium text-[#e32424]">
+                  Incorrect login credentials, please try again.
+                </span>
+              )}
             </div>
             <button
               type="submit"
-              className="rounded-md bg-[#cf04a9] px-8 py-[15px] text-center font-medium text-white hover:bg-[#9f0885]"
+              className={`cursor-pointer rounded-md bg-[#cf04a9] px-8 py-[15px] text-center font-medium text-white hover:bg-[#9f0885]`}
             >
               {isLoading ? "Loggin you in..." : "Continue"}
             </button>

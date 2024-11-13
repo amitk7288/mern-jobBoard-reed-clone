@@ -1,36 +1,92 @@
 import { useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
 import { useRegisterMutation } from "../features/usersApiSlice";
 import { registerUser } from "../features/authSlice";
 import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
-// import validator from "validator";
+import validator from "validator";
+import { toast } from "react-toastify";
 
-function UserRegister() {
+export default function UserRegister() {
   const registerForm = useRef(null);
 
   const [showPass, setShowPass] = useState(false);
   const [name, setName] = useState("");
+  const [nameError, setNameError] = useState(false);
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
+  const [passError, setPassError] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassError, setConfirmPassError] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [register, {isLoading}] = useRegisterMutation();
 
+  const nameOnChange = (e) => {
+    setName(e.target.value);
+  };
+  const handleNameCheck = () => {
+    if (name.trim() === "") {
+      setNameError(true);
+    } else if (name.trim() !== "") {
+      setNameError(false);
+    }
+  };
+
+  const emailOnChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleEmailCheck = () => {
+    if (validator.isEmail(email)) {
+      setEmailError(false);
+    } else if (!validator.isEmail(email)) {
+      setEmailError(true);
+    }
+  };
+
+  const passOnChange = (e) => {
+    setPassword(e.target.value);
+  };
+  const handlePassCheck = () => {
+    if (password.trim() === "") {
+      setPassError(true);
+    } else if (password.trim() !== "") {
+      setPassError(false);
+    }
+  }
+
+  const passConfirmOnChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+  const handlePassConfirmCheck = () => {
+    if (confirmPassword.trim() === "") {
+      setConfirmPassError(true);
+    } else if (confirmPassword.trim() !== "") {
+      setConfirmPassError(false);
+    }
+  };
+
   const handleRegisterUser = async (e) => {
     e.preventDefault();
 
+    handleNameCheck();
+    handleEmailCheck();
+    handlePassCheck();
+    handlePassConfirmCheck();
+
     if (password !== confirmPassword) {
-      console.log("Passwords do not match");
+      setPasswordsMatch(false);
     } else {
       try {
         const res = await register({ name, email, password }).unwrap();
         dispatch(registerUser({ ...res }));
+        toast.success("Profile created successfully");
         navigate("/login");
       } catch (err) {
          console.log('there was an error');
@@ -58,13 +114,16 @@ function UserRegister() {
                 name="name"
                 id="name"
                 placeholder="Your name"
-                className="rounded-md border border-rdblack py-3 pl-5 pr-10"
+                className={`${nameError && `border-red-600`} rounded-md border border-rdblack py-3 pl-5 pr-10`}
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={nameOnChange}
+                onKeyDown={handleNameCheck}
               />
-              <span className="hidden text-sm font-medium text-[#e32424]">
-                Please enter your name
-              </span>
+              {nameError && (
+                <span className="text-sm font-medium text-[#e32424]">
+                  Please enter your name
+                </span>
+              )}
             </div>
             <div className="flex flex-col gap-1">
               <input
@@ -72,16 +131,21 @@ function UserRegister() {
                 name="email"
                 id="email"
                 placeholder="Email address"
-                className="rounded-md border border-rdblack py-3 pl-5 pr-10"
+                className={`${emailError && `border-red-600`} rounded-md border border-rdblack py-3 pl-5 pr-10`}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={emailOnChange}
+                onKeyDown={handleEmailCheck}
               />
-              <span className="hidden text-sm font-medium text-[#e32424]">
-                Please enter a valid email
-              </span>
+              {emailError && (
+                <span className="text-sm font-medium text-[#e32424]">
+                  Please enter your email address
+                </span>
+              )}
             </div>
             <div className="flex flex-col gap-1">
-              <div className="flex items-center justify-between rounded-md border border-rdblack py-3 pl-5 pr-5">
+              <div
+                className={`${passError || passwordsMatch === false ? `border-red-600` : null} flex items-center justify-between rounded-md border border-rdblack py-3 pl-5 pr-5`}
+              >
                 <input
                   type={`${showPass ? `text` : `password`}`}
                   name="password"
@@ -89,7 +153,8 @@ function UserRegister() {
                   placeholder="Password"
                   className="h-full w-full border-0 outline-none ring-0"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={passOnChange}
+                  onKeyDown={handlePassCheck}
                   autoComplete="true"
                 />
                 {!showPass ? (
@@ -104,12 +169,16 @@ function UserRegister() {
                   />
                 )}
               </div>
-              <span className="hidden text-sm font-medium text-[#e32424]">
-                Please enter a password
-              </span>
+              {passError && (
+                <span className="text-sm font-medium text-[#e32424]">
+                  Please enter a password
+                </span>
+              )}
             </div>
             <div className="flex flex-col gap-1">
-              <div className="flex items-center justify-between rounded-md border border-rdblack py-3 pl-5 pr-5">
+              <div
+                className={`${confirmPassError || passwordsMatch === false ? `border-red-600` : null} flex items-center justify-between rounded-md border border-rdblack py-3 pl-5 pr-5`}
+              >
                 <input
                   type={`${showPass ? `text` : `password`}`}
                   name="regConfirmPassword"
@@ -118,18 +187,26 @@ function UserRegister() {
                   className="h-full w-full border-0 outline-none ring-0"
                   autoComplete="true"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={passConfirmOnChange}
+                  onKeyDown={handlePassConfirmCheck}
                 />
               </div>
-              <span className="hidden text-sm font-medium text-[#e32424]">
-                Please enter a password
-              </span>
+              {confirmPassError && (
+                <span className="text-sm font-medium text-[#e32424]">
+                  Please enter a password
+                </span>
+              )}
             </div>
+            {passwordsMatch === false && (
+              <span className="text-sm font-medium text-[#e32424]">
+                Passwords do not match
+              </span>
+            )}
             <button
               type="submit"
               className="rounded-md bg-[#cf04a9] px-8 py-[15px] text-center font-medium text-white hover:bg-[#9f0885]"
             >
-              {isLoading ? 'Loading...' : 'Create account'}
+              {isLoading ? "Loading..." : "Create account"}
             </button>
           </form>
           <div id="other">
@@ -160,5 +237,3 @@ function UserRegister() {
     </div>
   );
 }
-
-export default UserRegister
