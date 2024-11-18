@@ -21,6 +21,10 @@ export default function DropMenu({ children, trigger, pos }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div ref={dropdownRef} className="relative inline-block text-left">
       <div onClick={toggleDropdown}>{trigger}</div>
@@ -29,7 +33,7 @@ export default function DropMenu({ children, trigger, pos }) {
         <div
           className={`absolute z-[100] mt-2 w-full rounded-sm border border-gray-200 bg-white shadow-lg ${pos}`}
         >
-          {children}
+          {children(handleClose)}
         </div>
       )}
     </div>

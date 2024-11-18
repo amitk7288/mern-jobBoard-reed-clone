@@ -1,22 +1,34 @@
+import { useSelector } from "react-redux";
 import InfoPod from "../../../../ui-components/InfoPod";
 import InfoText from "../../../../ui-components/InfoText";
 import StatusModal from "../widgets/modal-content/StatusModal";
 import { LuPenSquare } from "react-icons/lu";
 
 export default function Status() {
+  const { profileInfo } = useSelector((state) => state.auth);
+  const { employmentStatus, noticePeriod, workEligibility } = profileInfo?.profile?.status || {};
+  console.log(profileInfo);
+  
+
   return (
     <InfoPod
       title={`Status and availability`}
       headerLink={`Edit`}
       headerIcon={<LuPenSquare />}
-      modalContent={<StatusModal />}
+      modalContent={
+        <StatusModal
+          employmentStatus={employmentStatus}
+          noticePeriod={noticePeriod}
+          workEligibility={workEligibility}
+        />
+      }
     >
       <ul className="flex flex-col gap-3">
-        <InfoText title={`Employment status`} body={`Employed (full-time)`} />
-        <InfoText title={`Notice period`} body={`2 weeks`} />
+        <InfoText title={`Employment status`} body={employmentStatus} />
+        <InfoText title={`Notice period`} body={noticePeriod} />
         <InfoText
           title={`Work eligibility`}
-          body={`Eligible to work in the UK`}
+          body={`${workEligibility ? `Eligible to work in the UK` : `Not eligible to work in the UK`}`}
         />
       </ul>
     </InfoPod>

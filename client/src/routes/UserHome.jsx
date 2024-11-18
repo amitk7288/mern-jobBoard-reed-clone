@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useGetProfileQuery } from "../features/usersApiSlice";
+import { getProfile } from "../features/authSlice";
 import InfoPod from "../components/ui-components/InfoPod";
 import ModalDropDown from "../components/ui-components/ModalDropDown";
 import MobileJobSearch from "../routes/MobileJobSearch";
@@ -13,7 +16,21 @@ import ProfileComplete from "../components/ui-components/logged-in-user/ProfileC
 import AppliedJobs from "../components/ui-components/logged-in-user/AppliedJobs";
 
 export default function UserHome() {
+  const dispatch = useDispatch();
+  const { profileInfo } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data: profileData, isSuccess, isLoading } = useGetProfileQuery();
+
+  useEffect(() => {
+    if (isSuccess && profileData && !profileInfo) {
+      dispatch(getProfile(profileData.profile));
+    }
+  }, [isSuccess, profileData, profileInfo, dispatch]);
+
+    if (isLoading || !profileInfo) {
+      return <p>Loading profile information...</p>;
+    }
 
   return (
     <>
