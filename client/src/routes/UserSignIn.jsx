@@ -1,9 +1,12 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
-import { useLoginMutation } from "../features/usersApiSlice";
-import { loginUser } from "../features/authSlice";
+import {
+  useLoginMutation,
+  useGetProfileQuery,
+} from "../features/usersApiSlice";
+import { loginUser, getProfile } from "../features/authSlice";
 import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import validator from 'validator';
@@ -22,6 +25,7 @@ export default function UserSignIn() {
   const dispatch = useDispatch();
 
   const [login, { isLoading }] = useLoginMutation();
+  const { profileData } = useGetProfileQuery();
 
   const emailOnChange = (e) => {
     setEmail(e.target.value);
@@ -54,6 +58,15 @@ export default function UserSignIn() {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(loginUser({ ...res }));
+
+      // if (profileData) {
+      //   dispatch(getProfile(profileData.profile));
+      //   console.log('yes');
+      // } else {
+      //   console.log('no');
+        
+      // }
+
       navigate("/");
     } catch (err) {
       if (email.trim() !== "" || password.trim() !== "") {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getProfile } from "../../../../features/authSlice";
 import ModalDropDown from "../../../ui-components/ModalDropDown";
 import MobileJobSearch from "../../../../routes/MobileJobSearch";
 import InfoPod from "../../../ui-components/InfoPod";
@@ -12,7 +13,6 @@ import Qualifications from "./widgets/Qualifications";
 import {
   HiMagnifyingGlass,
 } from "react-icons/hi2";
-import { LuPlusCircle } from "react-icons/lu";
 
 
 export default function UserProfile() {
@@ -72,15 +72,13 @@ export default function UserProfile() {
         </div>
         <div className="border-t bg-[#f8f8f8] px-3 py-5 2xl:px-[50px]">
           <div className="mx-auto max-w-[1280px] md:flex md:gap-6">
-            <div
-              className="flex basis-[35%] flex-col gap-3 lg:basis-[30%] xl:basis-[30%]"
-            >
+            <div className="flex basis-[35%] flex-col gap-3 lg:basis-[30%] xl:basis-[30%]">
               <About />
               <InfoPod title={`Profile`}>
                 <ProfileComplete />
               </InfoPod>
             </div>
-            <div className="flex basis-[80%] flex-col gap-3 mt-3 md:mt-0">
+            <div className="mt-3 flex basis-[80%] flex-col gap-3 md:mt-0">
               <CV />
               <LookingFor />
               <Status />

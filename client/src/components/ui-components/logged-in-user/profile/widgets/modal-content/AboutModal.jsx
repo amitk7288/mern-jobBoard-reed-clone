@@ -1,10 +1,57 @@
-import { HiOutlinePhone, HiOutlineEnvelope } from "react-icons/hi2";
+import { useState, useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {useUpdateProfileMutation} from "../../../../../../features/usersApiSlice";
+import {updateProfile} from "../../../../../../features/authSlice";
 
-export default function AboutModal() {
+export default function AboutModal({ role, tel, name, email, closeModal }) {
+  const dispatch = useDispatch();
+  const [updateAbout] = useUpdateProfileMutation();
+  const { profileInfo } = useSelector((state) => state.auth);
+
+  const [nameField, setNameField] = useState("");
+  const [roleField, setRoleField] = useState("");
+  const [telField, setTelField] = useState("");
+  const [emailField, setEmailField] = useState("");
+
+  useEffect(() => {
+    setNameField(name || "");
+    setRoleField(role || "");
+    setTelField(tel || "");
+    setEmailField(email || "");
+  }, [name, role, tel, email]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const updateData = {
+        name: nameField,
+        role: roleField,
+        tel: telField,
+        email: emailField,
+      };
+      await updateAbout(updateData).unwrap();
+      dispatch(
+        updateProfile({
+          name: updateData.name,
+          email: updateData.email,
+          profile: {
+            ...profileInfo.profile,
+            about: updateData,
+          },
+        }),
+      );
+      console.log("Profile updated");
+      closeModal();
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+
   return (
     <div>
       <h2 className="mb-3 text-xl font-bold">About you</h2>
-      <form className="flex flex-col gap-3">
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1">
           <label className="label-style" htmlFor="first-name">
             First Name*
@@ -15,10 +62,9 @@ export default function AboutModal() {
             id="first-name"
             placeholder="First name"
             className="input-style"
+            value={nameField}
+            onChange={(e) => setNameField(e.target.value)}
           />
-          <span className="hidden text-sm font-medium text-[#e32424]">
-            Please enter your first name
-          </span>
         </div>
         <div className="flex flex-col gap-1">
           <label className="label-style" htmlFor="role">
@@ -30,10 +76,9 @@ export default function AboutModal() {
             id="role"
             placeholder="Role"
             className="input-style"
+            value={roleField}
+            onChange={(e) => setRoleField(e.target.value)}
           />
-          <span className="hidden text-sm font-medium text-[#e32424]">
-            Please enter your prefered role
-          </span>
         </div>
         <div className="flex flex-col gap-1">
           <label className="label-style" htmlFor="tel">
@@ -45,6 +90,8 @@ export default function AboutModal() {
             id="tel"
             placeholder="Contact number"
             className="input-style"
+            value={telField}
+            onChange={(e) => setTelField(e.target.value)}
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -57,6 +104,8 @@ export default function AboutModal() {
             id="email"
             placeholder="Email"
             className="input-style"
+            value={emailField}
+            onChange={(e) => setEmailField(e.target.value)}
           />
         </div>
         <button

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import Modal from "../ui-components/Modal";
 
@@ -13,14 +14,20 @@ export default function InfoPod({title, headerIcon, headerLink, children, modalC
             className="flex cursor-pointer items-center gap-2 font-medium"
             onClick={() => setIsOpen(true)}
           >
-            <p className="text-rdlightBlue hidden s:block">{headerLink}</p>
+            <p className="hidden text-rdlightBlue s:block">{headerLink}</p>
             <div className="text-rdlightBlue">{headerIcon}</div>
           </div>
         </div>
         <div className="p-4">{children}</div>
       </div>
       {isOpen && (
-        <Modal closeModal={() => setIsOpen(false)}>{modalContent}</Modal>
+        <Modal closeModal={() => setIsOpen(false)}>
+          <div>
+            {React.cloneElement(modalContent, {
+              closeModal: () => setIsOpen(false),
+            })}
+          </div>
+        </Modal>
       )}
     </>
   );

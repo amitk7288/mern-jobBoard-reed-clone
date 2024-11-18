@@ -1,30 +1,84 @@
-export default function StatusModal() {
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useUpdateProfileMutation } from "../../../../../../features/usersApiSlice";
+import { updateProfile } from "../../../../../../features/authSlice";
+
+export default function StatusModal({
+  employmentStatus,
+  noticePeriod,
+  workEligibility,
+  closeModal,
+}) {
+
+    const dispatch = useDispatch();
+    const [updateStatus] = useUpdateProfileMutation();
+    const { profileInfo } = useSelector((state) => state.auth);
+    const { userInfo } = useSelector((state) => state.auth);
+
+    const [employmentField, setEmploymentField] = useState("");
+    const [noticeField, setNoticeField] = useState("");
+    const [eligibleField, setEligibleField] = useState(false);
+
+    useEffect(() => {
+      setEmploymentField(employmentStatus || "");
+      setNoticeField(noticePeriod || "");
+      setEligibleField(workEligibility || "");
+    }, [employmentStatus, noticePeriod, workEligibility]);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      try {
+        const updateData = {
+          employmentStatus: employmentField,
+          noticePeriod: noticeField,
+          workEligibility: eligibleField,
+        };
+        await updateStatus(updateData).unwrap();
+        dispatch(
+          updateProfile({
+            ...userInfo,
+            profile: {
+              ...profileInfo.profile,
+              status: updateData,
+            },
+          }),
+        );
+        console.log("Profile updated");
+        closeModal();
+      } catch (error) {
+        console.log("ERROR: ", error);
+      }
+    };
+
   return (
     <div>
       <h2 className="mb-3 text-xl font-bold">Status and availability</h2>
-      <form className="flex flex-col gap-3">
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1">
           <label className="label-style" htmlFor="employment-status">
-            Employment Status*
+            Employment Status
           </label>
           <select
             name="employment-status"
             id="employment-status"
             className="input-style"
+            value={employmentField}
+            onChange={(e) => setEmploymentField(e.target.value)}
             required
           >
             <option value="" disabled>
               Select employment status
             </option>
-            <option value="employed">Employed (full-time)</option>
-            <option value="part-time">Employed (part-time)</option>
-            <option value="unemployed">Unemployed</option>
+            <option value="Employed Full-time">Employed Full-time</option>
+            <option value="Employed Part-time">Employed Part-time</option>
+            <option value="Unemployed">Unemployed</option>
           </select>
         </div>
 
         <div className="flex flex-col gap-1">
           <label className="label-style" htmlFor="notice-period">
-            Notice Period*
+            Notice Period
           </label>
           <input
             type="text"
@@ -32,13 +86,14 @@ export default function StatusModal() {
             id="notice-period"
             placeholder="e.g. 2 weeks"
             className="input-style"
-            required
+            value={noticeField}
+            onChange={(e) => setNoticeField(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col gap-1">
           <label className="label-style" htmlFor="work-eligibility-checkbox">
-            Work Eligibility*
+            Work Eligibility
           </label>
           <label className="flex items-center">
             <input
@@ -46,7 +101,8 @@ export default function StatusModal() {
               name="work-eligibility"
               id="work-eligibility-checkbox"
               className="mr-2"
-              required
+              checked={eligibleField}
+              onChange={(e) => setEligibleField((prevState) => !prevState)}
             />
             <span>I am eligible to work in the UK</span>
           </label>

@@ -88,21 +88,57 @@ export default function Header() {
                     }
                     pos={`right-[0px] top-[38px]`}
                   >
-                    <nav className="flex flex-col items-start cursor-pointer">
+                    {(closeMenu) => (
+                      <nav className="flex cursor-pointer flex-col items-start">
+                        <button
+                          onClick={(e) => {
+                            handleViewProfile(e);
+                            closeMenu();
+                          }}
+                          className="relative flex w-full items-center gap-x-2 border-b border-gray-200 bg-transparent px-3 py-2 font-medium hover:bg-[#f3f3fe]"
+                        >
+                          Profile
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            handleLogout(e);
+                            closeMenu();
+                          }}
+                          className="relative flex w-full items-center gap-x-2 bg-transparent px-3 py-2 font-medium hover:bg-[#f3f3fe]"
+                        >
+                          Log out
+                        </button>
+                      </nav>
+                    )}
+                  </DropMenu>
+
+                  {/* <DropMenu
+                    trigger={
+                      <div className="flex cursor-pointer items-center gap-1 p-1">
+                        <IoPersonOutline className="text-xl" />
+                        <p className="font-medium md:block">
+                          {userInfo.email}
+                        </p>
+                        <IoChevronDown className="text-xl" />
+                      </div>
+                    }
+                    pos={`right-[0px] top-[38px]`}
+                  >
+                    <nav className="flex cursor-pointer flex-col items-start">
                       <button
                         onClick={handleViewProfile}
-                        className="relative flex w-full items-center gap-x-2 border-b border-gray-200 bg-transparent px-1.5 py-2 font-medium hover:bg-[#f3f3fe]"
+                        className="relative flex w-full items-center gap-x-2 border-b border-gray-200 bg-transparent px-3 py-2 font-medium hover:bg-[#f3f3fe]"
                       >
                         Profile
                       </button>
                       <button
                         onClick={handleLogout}
-                        className="relative flex w-full items-center gap-x-2 bg-transparent px-1.5 py-2 font-medium hover:bg-[#f3f3fe]"
+                        className="relative flex w-full items-center gap-x-2 bg-transparent px-3 py-2 font-medium hover:bg-[#f3f3fe]"
                       >
                         Log out
                       </button>
                     </nav>
-                  </DropMenu>
+                  </DropMenu> */}
                 </div>
               </>
             ) : (

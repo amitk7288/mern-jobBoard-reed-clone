@@ -89,7 +89,7 @@ export default function UserRegister() {
         toast.success("Profile created successfully");
         navigate("/login");
       } catch (err) {
-         console.log('there was an error');
+         console.log(err);
       }
     }
   };
