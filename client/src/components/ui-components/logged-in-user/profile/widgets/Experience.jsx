@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeExperience } from "../../../../../features/authSlice";
+import { setExp } from "../../../../../features/profileSlice";
 import { useUpdateProfileMutation } from "../../../../../features/usersApiSlice";
 import InfoPod from "../../../../ui-components/InfoPod";
 import ExperienceText from "../../../../ui-components/ExperienceText";
@@ -11,6 +13,14 @@ export default function Experience() {
   const [updateExperience] = useUpdateProfileMutation();
   const { profileInfo } = useSelector((state) => state.auth);
   const { experience } = profileInfo?.profile || {};
+
+  useEffect(() => {
+    if (experience.length > 0) {
+      dispatch(setExp(true));
+    } else {
+      dispatch(setExp(false));
+    }    
+  }, [experience])
 
   const handleRemove = async (id) => {
     try {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setStatus } from "../../../../../../features/profileSlice";
 import { useUpdateProfileMutation } from "../../../../../../features/usersApiSlice";
 import { updateProfile } from "../../../../../../features/authSlice";
 
@@ -22,7 +23,14 @@ export default function StatusModal({
     useEffect(() => {
       setEmploymentField(employmentStatus || "");
       setNoticeField(noticePeriod || "");
-      setEligibleField(workEligibility || "");
+      setEligibleField(workEligibility ?? false);
+
+      if (employmentStatus && noticePeriod) {
+        dispatch(setStatus(true));
+      } else {
+        dispatch(setStatus(false));
+      }
+
     }, [employmentStatus, noticePeriod, workEligibility]);
 
     const handleSubmit = async (e) => {
@@ -32,7 +40,7 @@ export default function StatusModal({
         const updateData = {
           employmentStatus: employmentField,
           noticePeriod: noticeField,
-          workEligibility: eligibleField,
+          workEligibility: Boolean(eligibleField),
         };
         await updateStatus(updateData).unwrap();
         dispatch(

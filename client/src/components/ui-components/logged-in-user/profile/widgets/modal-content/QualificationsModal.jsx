@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setQual } from "../../../../../../features/profileSlice";
 import { addQualification } from "../../../../../../features/authSlice";
 import { useUpdateProfileMutation } from "../../../../../../features/usersApiSlice";
 import { updateProfile } from "../../../../../../features/authSlice";
@@ -10,6 +11,7 @@ export default function QualificationsModal({ closeModal }) {
   const [updateQualifications] = useUpdateProfileMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const { profileInfo } = useSelector((state) => state.auth);
+  const { qualifications } = profileInfo?.profile || {};
 
   const [name, setName] = useState("");
   const [school, setSchool] = useState("");
@@ -17,6 +19,26 @@ export default function QualificationsModal({ closeModal }) {
   const [yearEnd, setYearEnd] = useState("");
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    setIsFormValid(
+      name.trim() &&
+      school.trim() &&
+      yearStart.trim() &&
+      yearEnd.trim() &&
+      subject.trim() &&
+      grade.trim(),
+    );
+  }, [name, school, yearStart, yearEnd, subject, grade]);
+
+  useEffect(() => {
+    if (qualifications.length > 0) {
+      dispatch(setQual(true));
+    } else {
+      dispatch(setQual(false));
+    }
+  }, [qualifications]);
 
   const handleAddQualification = async (e) => {  
     e.preventDefault();
@@ -149,7 +171,12 @@ export default function QualificationsModal({ closeModal }) {
         </div>
         <button
           type="submit"
-          className="mt-3 flex w-fit self-end rounded-md bg-[#cf04a9] px-8 py-2 text-center font-medium text-white hover:bg-[#9f0885]"
+          className={`mt-3 flex w-fit self-end rounded-md px-8 py-2 text-center font-medium text-white ${
+            isFormValid
+              ? "bg-[#cf04a9] hover:bg-[#9f0885]"
+              : "cursor-not-allowed bg-gray-400"
+          }`}
+          disabled={!isFormValid}
         >
           Add
         </button>

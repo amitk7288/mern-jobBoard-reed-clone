@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { getProfile } from "../../../../features/authSlice";
 import ModalDropDown from "../../../ui-components/ModalDropDown";
 import MobileJobSearch from "../../../../routes/MobileJobSearch";
 import InfoPod from "../../../ui-components/InfoPod";

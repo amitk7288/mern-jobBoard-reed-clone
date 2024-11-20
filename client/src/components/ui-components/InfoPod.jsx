@@ -7,7 +7,7 @@ export default function InfoPod({title, headerIcon, headerLink, children, modalC
 
   return (
     <>
-      <div className="flex flex-col rounded-md border border-[#c8c8c8] bg-white text-[#0f151a] md:w-[100%]">
+      <div className={`flex flex-col rounded-md border border-[#c8c8c8] bg-white text-[#0f151a] md:w-[100%]`}>
         <div className="flex items-center justify-between border-b p-4">
           <p className="text-[20px] font-bold text-rdblack">{title}</p>
           <div

@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { setQual } from "../../../../../features/profileSlice";
 import { removeQualification } from "../../../../../features/authSlice";
 import { useUpdateProfileMutation } from "../../../../../features/usersApiSlice";
 import InfoPod from "../../../../ui-components/InfoPod";
@@ -12,7 +14,13 @@ export default function Qualifications() {
   const { profileInfo } = useSelector((state) => state.auth);
   const { qualifications } = profileInfo?.profile || {};
 
-  console.log(qualifications);
+  useEffect(() => {
+    if (qualifications.length > 0) {
+      dispatch(setQual(true));
+    } else {
+      dispatch(setQual(false));
+    }
+  }, [qualifications]);
 
   const handleRemove = async (id) => {
     try {

@@ -7,8 +7,7 @@ import { LuPenSquare } from "react-icons/lu";
 export default function Status() {
   const { profileInfo } = useSelector((state) => state.auth);
   const { employmentStatus, noticePeriod, workEligibility } = profileInfo?.profile?.status || {};
-  console.log(profileInfo);
-  
+
 
   return (
     <InfoPod
