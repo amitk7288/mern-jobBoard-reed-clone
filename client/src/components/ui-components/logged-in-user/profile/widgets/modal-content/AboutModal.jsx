@@ -1,5 +1,6 @@
 import { useState, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setAbout } from "../../../../../../features/profileSlice";
 import {useUpdateProfileMutation} from "../../../../../../features/usersApiSlice";
 import {updateProfile} from "../../../../../../features/authSlice";
 
@@ -18,6 +19,13 @@ export default function AboutModal({ role, tel, name, email, closeModal }) {
     setRoleField(role || "");
     setTelField(tel || "");
     setEmailField(email || "");
+
+    if (name && role && tel && email) {
+      dispatch(setAbout(true));
+    } else {
+      dispatch(setAbout(false));
+    }
+
   }, [name, role, tel, email]);
 
   const handleSubmit = async (e) => {

@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import InfoPod from "../../../../ui-components/InfoPod";
 import CVModal from "../widgets/modal-content/CVModal";
 import { LuPlusCircle } from "react-icons/lu";
@@ -6,10 +6,7 @@ import { LuPlusCircle } from "react-icons/lu";
 export default function CV() {
   const { profileInfo } = useSelector((state) => state.auth);
   const { cv } = profileInfo?.profile || {};
-  const cvValue = cv;
-
-  console.log(profileInfo);
-  
+  const cvValue = cv;  
   
   return (
     <InfoPod

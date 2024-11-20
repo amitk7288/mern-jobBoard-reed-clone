@@ -2,12 +2,12 @@ import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import { logoutUser } from "../../features/authSlice";
+import { setProfileDefaults } from "../../features/profileSlice";
 import { useLogoutMutation } from "../../features/usersApiSlice";
 import {
   IoHeartOutline,
   IoMenuSharp,
   IoChevronDown,
-  IoChevronUp,
   IoPersonOutline,
 } from "react-icons/io5";
 import logo from "../../assets/reed-logo.webp";
@@ -21,6 +21,7 @@ export default function Header() {
   const [isMobMenuOpen, setIsMobMenuOpen] = useState(false);
 
   const { userInfo } = useSelector((state) => state.auth);
+  console.log(userInfo);
 
   const [logout] = useLogoutMutation();
 
@@ -30,6 +31,7 @@ export default function Header() {
     try {
       await logout().unwrap();
       dispatch(logoutUser());
+      dispatch(setProfileDefaults());
       navigate("/login");
     } catch (err) {
       console.log(err);

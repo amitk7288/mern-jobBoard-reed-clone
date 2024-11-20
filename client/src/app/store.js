@@ -3,9 +3,11 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { apiSlice } from "../features/apiSlice";
 import authReducer from "../features/authSlice";
+import profileReducer from "../features/profileSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  profile: profileReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 

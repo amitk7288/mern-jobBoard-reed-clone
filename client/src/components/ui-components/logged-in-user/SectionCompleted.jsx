@@ -1,4 +1,9 @@
-
-export default function SectionCompleted() {
-  return <div className="h-[4px] w-full rounded-lg bg-gray-400"></div>;
+export default function SectionCompleted({ highlight }) {
+  return (
+    <div
+      className={`h-[4px] w-full rounded-lg ${
+        highlight ? "bg-rdpink" : "bg-gray-400"
+      }`}
+    ></div>
+  );
 }

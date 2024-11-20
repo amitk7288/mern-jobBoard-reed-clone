@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setCV } from "../../../../../../features/profileSlice";
 import { useUpdateProfileMutation } from "../../../../../../features/usersApiSlice";
 import { updateProfile } from "../../../../../../features/authSlice";
 import { LuUpload } from "react-icons/lu";
@@ -14,6 +15,13 @@ export default function CVModal({ cvValue, closeModal }) {
 
   useEffect(() => {
     setFileName(cvValue);
+
+    if (cvValue) {
+      dispatch(setCV(true));
+    } else {
+      dispatch(setCV(false));
+    }
+
   }, [cvValue]);
 
   const handleFileChange = (e) => {

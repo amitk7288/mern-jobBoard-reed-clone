@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import InfoPod from "../InfoPod";
 import ModalDropDown from "../ModalDropDown";
 import MobileJobSearch from "../../../routes/MobileJobSearch";
@@ -15,8 +14,6 @@ import AppliedJobs from "./AppliedJobs";
 
 export default function UserHome() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const {userinfo} = useSelector((state) => state.auth);
 
   return (
     <>

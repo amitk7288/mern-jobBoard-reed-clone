@@ -1,21 +1,14 @@
-import InfoPod from "../InfoPod"
+import { useSelector } from "react-redux";
+import InfoPod from "../InfoPod";
 import AboutModal from "./profile/widgets/modal-content/AboutModal";
-import {useSelector} from "react-redux";
 import { LuPenSquare } from "react-icons/lu";
-import {
-  HiOutlinePhone,
-  HiOutlineEnvelope,
-} from "react-icons/hi2";
+import { HiOutlinePhone, HiOutlineEnvelope } from "react-icons/hi2";
 
 export default function About() {
-
   const { userInfo } = useSelector((state) => state.auth);
   const { profileInfo } = useSelector((state) => state.auth);
   const { role, tel } = profileInfo?.profile?.about || {};
-  console.log('profile: ', profileInfo);
-  
-  console.log('user:', userInfo);
-  
+
   return (
     <InfoPod
       title={`About you`}

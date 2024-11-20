@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setExp } from "../../../../../../features/profileSlice";
 import { addExperience } from "../../../../../../features/authSlice";
 import { useUpdateProfileMutation } from "../../../../../../features/usersApiSlice";
 import { updateProfile } from "../../../../../../features/authSlice";
@@ -10,11 +11,25 @@ export default function ExperienceModal({ closeModal }) {
   const [updateExperience] = useUpdateProfileMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const { profileInfo } = useSelector((state) => state.auth);
+  const { experience } = profileInfo?.profile || {};
 
   const [expRole, setExpRole] = useState("");
   const [company, setCompany] = useState("");
   const [yearStart, setYearStart] = useState("");
   const [yearEnd, setYearEnd] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    setIsFormValid(expRole.trim() && company.trim() && yearStart.trim() && yearEnd.trim());
+  }, [expRole, company, yearStart, yearEnd]);
+
+  useEffect(() => {
+    if (experience.length > 0) {
+      dispatch(setExp(true));
+    } else {
+      dispatch(setExp(false));
+    }
+  }, [experience])
 
   const handleAddExperience =  async (e) => {
     e.preventDefault();
@@ -114,7 +129,12 @@ export default function ExperienceModal({ closeModal }) {
         </div>
         <button
           type="submit"
-          className="mt-3 flex w-fit self-end rounded-md bg-[#cf04a9] px-8 py-2 text-center font-medium text-white hover:bg-[#9f0885]"
+          className={`mt-3 flex w-fit self-end rounded-md px-8 py-2 text-center font-medium text-white ${
+            isFormValid
+              ? "bg-[#cf04a9] hover:bg-[#9f0885]"
+              : "cursor-not-allowed bg-gray-400"
+          }`}
+          disabled={!isFormValid}
         >
           Add
         </button>
