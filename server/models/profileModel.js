@@ -43,6 +43,8 @@ const profileSchema = mongoose.Schema(
         grade: String,
       },
     ],
+    savedJobs: [],
+    appliedJobs: [],
   },
   { timestamps: true }
 );

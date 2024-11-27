@@ -67,6 +67,8 @@ const registerUser = asyncHandler (async (req, res) => {
     },
     experience: [],
     qualifications: [],
+    savedJobs: [],
+    appliedJobs: [],
   });
 
   if (user && profile) {
@@ -124,7 +126,7 @@ const updateUserProfile = asyncHandler (async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 
-    const { role, tel, cv, desiredJobTitle, salary, location, jobType, employmentStatus, noticePeriod, workEligibility, experience, qualifications } = req.body;
+    const { role, tel, cv, desiredJobTitle, salary, location, jobType, employmentStatus, noticePeriod, workEligibility, experience, qualifications, savedJobs, appliedJobs } = req.body;
 
     profile.about.role = role ?? profile.about.role;
     profile.about.tel = tel ?? profile.about.tel;
@@ -146,6 +148,14 @@ const updateUserProfile = asyncHandler (async (req, res) => {
 
     if (qualifications) {
       profile.qualifications = qualifications;
+    }
+
+    if (savedJobs) {
+      profile.savedJobs = savedJobs;
+    }
+
+    if (appliedJobs) {
+      profile.appliedJobs = appliedJobs;
     }
 
     const updatedUser = await user.save();

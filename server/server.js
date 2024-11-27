@@ -8,6 +8,19 @@ import connectDB from './config/db.js';
 const port = process.env.PORT || 5001;
 import userRoutes from "./routes/userRoutes.js";
 
+const base_url = process.env.REED_BASE_URL;
+const api_key = process.env.REED_API;
+
+const getAuthHeader = () => {
+  const username = api_key;
+  const password = "";
+  const base64Credentials = Buffer.from(`${username}:${password}`).toString("base64");
+  return {
+    Authorization: `Basic ${base64Credentials}`,
+    "Content-Type": "application/json",
+  };
+};
+
 // connects to the db
 connectDB();
 
@@ -26,17 +39,52 @@ app.use("/api/users", userRoutes);
 
 app.get('/', (req, res) => res.send('Server is ready'));
 
+app.get("/api/jobs/:jobId", async (req, res) => {
+  try {
+    console.log(`Fetching job ID: ${req.params.jobId}`);
+    const response = await fetch(`${base_url}/jobs/${req.params.jobId}`, {
+      method: "GET",
+      headers: getAuthHeader(),
+    });
+    console.log("External API response status:", response.status);
+
+    if (!response.ok) {
+      return res.status(response.status).json({ message: "Failed to fetch job details" });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching job details:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/api/search", async (req, res) => {
+  try {
+    const { keywords: what, location: where } = req.query;
+
+    const response = await fetch(`${base_url}/search?keywords=${what}&location=${where}`, {
+      method: "GET",
+      headers: getAuthHeader(),
+    });
+    console.log("External API response status:", response.status);
+
+    if (!response.ok) {
+      return res.status(response.status).json({ message: "Failed to fetch job details" });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching job details:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
+
 app.use(notFound);
 app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
-
-/**
- * MERN Step by Step
- * 1. Create two folders in root for client/frontend and server/backend
- * 2. The client/frontend folder will contain the react stuff
- * 3. Either create npm init -y in backend or root, where you do this determines how the project is deployed
- * 4. server.js entry point
- * 4. MVC - Models, Views, Controllers
- * 5. 
- */
