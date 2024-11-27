@@ -19,20 +19,21 @@ import UserSignIn from './routes/UserSignIn.jsx';
 import UserRegister from './routes/UserRegister.jsx';
 import UserProfile from './components/ui-components/logged-in-user/profile/UserProfile.jsx';
 import JobPage from './routes/JobPage.jsx';
-
+import ScrollToTop from './components/ui-components/ScrollToTop.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route element={<MainView />}>
         <Route path="/" element={<></>} />
-
         {/* Public routes */}
-        <Route path="results" element={<JobResultsPage />} />
-        <Route path="jobpage" element={<JobPage />} />
         <Route path="login" element={<UserSignIn />} />
-        <Route path="register" element={<UserRegister />} />
-
+        <Route path="register" element={<UserRegister />} />{" "}
+        <Route
+          path="search"
+          element={<JobResultsPage />}
+        />
+        <Route path="jobs/:jobId" element={<JobPage />} />
         {/* Private routes */}
         <Route element={<PrivateRoute />}>
           <Route path="profile" element={<UserProfile />} />
@@ -46,7 +47,9 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
-      <RouterProvider router={router} />
+      <RouterProvider router={router}>
+        <ScrollToTop />
+      </RouterProvider>
     </PersistGate>
   </Provider>,
 );

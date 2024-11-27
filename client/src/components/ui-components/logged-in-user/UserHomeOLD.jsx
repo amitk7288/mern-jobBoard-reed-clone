@@ -12,7 +12,7 @@ import {
 import ProfileComplete from "./ProfileComplete";
 import AppliedJobs from "./AppliedJobs";
 
-export default function UserHome() {
+export default function UserHomeOLD() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
