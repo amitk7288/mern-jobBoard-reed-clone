@@ -6,9 +6,9 @@ import Profile from "../models/profileModel.js";
 // @desc Auth/login user/set token
 // route POST api/users/auth
 // @access Public
-const authUser = asyncHandler (async (req, res) => {
+const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  
+
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
@@ -23,28 +23,27 @@ const authUser = asyncHandler (async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error("Invalid email or password");
   }
-
-})
+});
 
 // @desc Register a new user
 // route POST api/users
 // @access Public
-const registerUser = asyncHandler (async (req, res) => {
+const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
-  
-  const userExists = await User.findOne({email});
+
+  const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
-    throw new Error('User already exists');
+    throw new Error("User already exists");
     // return?
   }
 
   const user = await User.create({
     name,
     email,
-    password
+    password,
   });
 
   const profile = await Profile.create({
@@ -67,6 +66,8 @@ const registerUser = asyncHandler (async (req, res) => {
     },
     experience: [],
     qualifications: [],
+    savedJobs: [],
+    appliedJobs: [],
   });
 
   if (user && profile) {
@@ -79,44 +80,43 @@ const registerUser = asyncHandler (async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Invalid user data');
+    throw new Error("Invalid user data");
   }
-
-})
+});
 
 // @desc Logout user
 // route POST api/users/logout
 // @access Public
-const logoutUser = asyncHandler (async (req, res) => {
+const logoutUser = asyncHandler(async (req, res) => {
   // kill the jwt
-  res.cookie('jwt', '', {
-    httpOnly: true, 
-    expires: new Date(0)
-  })
-  res.status(200).json({mssg: 'Logged out'});
-})
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ mssg: "Logged out" });
+});
 
 // @desc Get user profile
 // route GET api/users/profile
 // @access Private
-const getUserProfile = asyncHandler (async (req, res) => {
+const getUserProfile = asyncHandler(async (req, res) => {
   const profile = await Profile.findOne({ userId: req.user._id }).populate("userId", "name email");
-  
+
   if (profile) {
     res.status(201).json({
       profile,
     });
   } else {
-    console.log('get profile failed');
+    console.log("get profile failed");
     res.status(404);
-    throw new Error("Profile not found");    
-  }  
-})
+    throw new Error("Profile not found");
+  }
+});
 
 // @desc Update user profile
 // route PUT api/users/profile
 // @access Private
-const updateUserProfile = asyncHandler (async (req, res) => {
+const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   const profile = await Profile.findOne({ userId: req.user._id });
 
@@ -124,11 +124,11 @@ const updateUserProfile = asyncHandler (async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 
-    const { role, tel, cv, desiredJobTitle, salary, location, jobType, employmentStatus, noticePeriod, workEligibility, experience, qualifications } = req.body;
+    const { role, tel, cv, desiredJobTitle, salary, location, jobType, employmentStatus, noticePeriod, workEligibility, experience, qualifications, savedJobs, appliedJobs } = req.body;
 
     profile.about.role = role ?? profile.about.role;
     profile.about.tel = tel ?? profile.about.tel;
-    
+
     profile.cv = cv ?? profile.cv;
 
     profile.lookingFor.desiredJobTitle = desiredJobTitle ?? profile.lookingFor.desiredJobTitle;
@@ -148,6 +148,14 @@ const updateUserProfile = asyncHandler (async (req, res) => {
       profile.qualifications = qualifications;
     }
 
+    if (savedJobs) {
+      profile.savedJobs = savedJobs;
+    }
+
+    if (appliedJobs) {
+      profile.appliedJobs = appliedJobs;
+    }
+
     const updatedUser = await user.save();
     const updatedProfile = await profile.save();
 
@@ -159,11 +167,10 @@ const updateUserProfile = asyncHandler (async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
-  res.status(200).json({mssg: 'Update user profile'});
-})
+  res.status(200).json({ mssg: "Update user profile" });
+});
 
-
-export {authUser, registerUser, logoutUser, getUserProfile, updateUserProfile};
+export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile };
