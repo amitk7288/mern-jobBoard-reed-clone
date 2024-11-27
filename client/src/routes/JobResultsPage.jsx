@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import JobCard from "../components/JobCard";
 import JobSearch from "./JobSearch";
 import ModalDropDown from "../components/ui-components/ModalDropDown";
@@ -8,13 +10,47 @@ import {
   HiMagnifyingGlass,
   HiOutlineBellAlert,
   HiAdjustmentsVertical,
-  HiMiniArrowSmallRight, 
-  HiMiniArrowSmallLeft
+  HiMiniArrowSmallRight,
+  HiMiniArrowSmallLeft,
+  HiArrowLeftCircle,
 } from "react-icons/hi2";
 
-
 export default function JobResultsPage() {
+  const navigate = useNavigate();
+  const jobResults = useSelector((state) => state.jobs.jobResults.results);
+  const searchData = useSelector((state) => state.jobs.searchData);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 10;
+
+  const keywords = searchData.whatVal;
+
+  const startIndex = (currentPage - 1) * jobsPerPage;
+  const endIndex = startIndex + jobsPerPage;
+  const currentJobs = jobResults?.slice(startIndex, endIndex);
+
+  const handleNextPage = () => {
+    if (currentJobs?.length === jobsPerPage) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const formatDate = (jobDate) => {
+    if (jobDate) {
+      const [day, month, year] = jobDate?.split("/");
+      const date = new Date(`${year}-${month}-${day}`);
+      const formattedDate = `${parseInt(day)} ${date.toLocaleDateString("en-GB", { month: "short" })}`;
+      return formattedDate;
+    } else {
+      console.log("no job date");
+    }
+  };
 
   return (
     <>
@@ -26,15 +62,28 @@ export default function JobResultsPage() {
             onClick={() => setIsOpen(true)}
           >
             <HiMagnifyingGlass className="text-2xl text-rdpink" />
-            <p>Developer jobs</p>
+            <p>{keywords} jobs</p>
           </div>
         </div>
         <div className="border-t bg-[#f8f8f8] px-3 py-5 2xl:px-[50px]">
           <div className="mx-auto block max-w-[1280px] py-[20px]">
-            <h1 className="text-lg font-bold">4,789 Developer Jobs</h1>
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-1"
+            >
+              <HiArrowLeftCircle />
+              <p>Back</p>
+            </button>
+            <h1 className="text-lg font-bold">
+              Results: {jobResults?.length} {decodeURIComponent(keywords)}{" "}
+              {jobResults?.length > 1 ? `jobs` : `job`}
+            </h1>
           </div>
           <div className="mx-auto max-w-[1280px] md:flex md:gap-6">
-            <div id="" className="basis-[35%] lg:basis-[30%] xl:basis-[20%]">
+            <div
+              id="filter"
+              className="basis-[35%] lg:basis-[30%] xl:basis-[20%]"
+            >
               <div className="flex items-center justify-center gap-5 pb-[20px] md:flex-col">
                 <button className="flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] bg-white px-3 py-1.5 text-center font-medium text-[#081351] md:hidden">
                   <HiAdjustmentsVertical className="text-xl" />
@@ -226,26 +275,57 @@ export default function JobResultsPage() {
             </div>
             <div className="basis-[80%]">
               <div id="main" className="flex flex-col gap-3">
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
+                {currentJobs?.map((job) => (
+                  <JobCard
+                    key={job.jobId}
+                    job={job}
+                    jobId={job.jobId}
+                    title={job.jobTitle}
+                    date={job.date ? formatDate(job?.date) : ""}
+                    employer={job.employerName}
+                    max={job.maximumSalary}
+                    min={job.minimumSalary}
+                    loc={job.locationName}
+                  />
+                ))}
               </div>
               <div id="footer">
                 {/* pagination */}
                 <div className="mt-5 flex flex-col gap-2.5 rounded-md border border-[#c8c8c8] bg-white px-3 py-2.5 text-[#0f151a]">
                   <div className="flex items-center justify-center gap-5 py-[20px]">
-                    <button className="flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] px-3 py-1.5 text-center font-medium text-[#081351]">
+                    <button
+                      onClick={handlePreviousPage}
+                      className={`flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] px-3 py-1.5 text-center font-medium text-[#081351] ${
+                        currentPage === 1
+                          ? "cursor-not-allowed border-gray-300 bg-gray-300 text-gray-500 opacity-60"
+                          : ""
+                      }`}
+                      disabled={currentPage === 1}
+                    >
                       <HiMiniArrowSmallLeft className="text-xl" />
                       <p className="text-sm">Previous</p>
                     </button>
-                    <button className="flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] px-3 py-1.5 text-center font-medium text-[#081351]">
+
+                    <button
+                      onClick={handleNextPage}
+                      className={`flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] px-3 py-1.5 text-center font-medium text-[#081351] ${
+                        currentPage === 10
+                          ? "cursor-not-allowed border-gray-300 bg-gray-300 text-gray-500 opacity-60"
+                          : ""
+                      }`}
+                      disabled={currentPage === 10}
+                    >
                       <p className="text-sm">Next</p>
                       <HiMiniArrowSmallRight className="text-xl" />
                     </button>
+                  </div>
+                  {/* Page Information */}
+                  <div className="mt-4 flex items-center justify-center text-sm text-[#0f151a]">
+                    <p>
+                      Page {currentPage} - Showing jobs{" "}
+                      {currentPage * jobsPerPage - jobsPerPage + 1} -{" "}
+                      {Math.min(currentPage * jobsPerPage, jobResults?.length)}
+                    </p>
                   </div>
                 </div>
               </div>

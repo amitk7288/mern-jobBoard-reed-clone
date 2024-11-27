@@ -1,15 +1,15 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
 import {
   useLoginMutation,
   useGetProfileQuery,
 } from "../features/usersApiSlice";
-import { loginUser, getProfile } from "../features/authSlice";
+import { loginUser } from "../features/authSlice";
 import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
-import validator from 'validator';
+import validator from "validator";
 
 export default function UserSignIn() {
   const signInForm = useRef(null);
@@ -22,6 +22,7 @@ export default function UserSignIn() {
   const [formError, setFormError] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const [login, { isLoading }] = useLoginMutation();
@@ -29,14 +30,14 @@ export default function UserSignIn() {
 
   const emailOnChange = (e) => {
     setEmail(e.target.value);
-  }
+  };
   const handleEmailCheck = () => {
     if (validator.isEmail(email)) {
       setEmailError(false);
     } else if (!validator.isEmail(email)) {
       setEmailError(true);
     }
-  }
+  };
 
   const passOnChange = (e) => {
     setPassword(e.target.value);
@@ -58,23 +59,15 @@ export default function UserSignIn() {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(loginUser({ ...res }));
-
-      // if (profileData) {
-      //   dispatch(getProfile(profileData.profile));
-      //   console.log('yes');
-      // } else {
-      //   console.log('no');
-        
-      // }
-
-      navigate("/");
+      const redirectPath = location.state?.from || "/";
+      navigate(redirectPath);
     } catch (err) {
       if (email.trim() !== "" || password.trim() !== "") {
         setFormError(true);
       }
       console.log("there was an error");
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center lg:bg-[#f8f8f8]">

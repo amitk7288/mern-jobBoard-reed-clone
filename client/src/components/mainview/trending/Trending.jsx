@@ -11,17 +11,17 @@ export default function Trending() {
         Trending Jobs
       </p>
       <div className="flex flex-wrap justify-center gap-3">
-        <TrendingBtn title={`Work from home`} />
-        <TrendingBtn title={`Immediate`} />
-        <TrendingBtn title={`Manager`} />
-        <TrendingBtn title={`Finance`} />
-        <TrendingBtn title={`Warehouse`} />
-        <TrendingBtn title={`Accountant`} />
+        <TrendingBtn title={`Work from home`} sector={`Work%20from%20home%20`} />
+        <TrendingBtn title={`Immediate`} sector={`Immediate`} />
+        <TrendingBtn title={`Manager`} sector={`Manager`} />
+        <TrendingBtn title={`Finance`} sector={`Finance`} />
+        <TrendingBtn title={`Warehouse`} sector={`Warehouse`} />
+        <TrendingBtn title={`Accountant`} sector={`Accountant`} />
       </div>
-      <div className="md:hidden p-[15px]">
+      <div className="p-[15px] md:hidden">
         <a
           href="#"
-          className="text-rdlightBlue md:pt-4 flex items-center justify-center gap-1 font-medium"
+          className="flex items-center justify-center gap-1 font-medium text-rdlightBlue md:pt-4"
         >
           <p className="hover:underline">See more</p>
           <IoChevronDownOutline />

@@ -60,6 +60,37 @@ const authSlice = createSlice({
         profile: state.profileInfo.profile,
       };
     },
+    toggleSave: (state, action) => {
+      const job = action.payload;
+
+      const isAlreadySaved = state.profileInfo.profile.savedJobs.some(
+        (savedJob) => savedJob.jobId === job.jobId,
+      );
+
+      if (isAlreadySaved) {
+        state.profileInfo.profile.savedJobs = state.profileInfo.profile.savedJobs.filter(
+          (savedJob) => savedJob.jobId !== job.jobId);
+          console.log(`${job} removed`);
+      } else {
+        state.profileInfo.profile.savedJobs.push(job);
+        console.log(`${job} added`);
+      }
+    },
+    applyToJob: (state, action) => {
+      const job = action.payload;
+
+      const isAlreadyApplied = state.profileInfo.profile.appliedJobs.some(
+        (appliedJob) => appliedJob.jobId === job.jobId,
+      );
+
+      if (isAlreadyApplied) {
+        console.log("job already applied to");
+        return;
+      } else {
+        state.profileInfo.profile.appliedJobs.push(job);
+        console.log(`${job} applied`);
+      }
+    },
   },
 });
 
@@ -73,6 +104,8 @@ export const {
   removeExperience,
   addQualification,
   removeQualification,
+  toggleSave,
+  applyToJob,
 } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -21,7 +21,7 @@ export default function Header() {
   const [isMobMenuOpen, setIsMobMenuOpen] = useState(false);
 
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo);
+  const profileInfo = useSelector((state) => state?.auth?.profileInfo);
 
   const [logout] = useLogoutMutation();
 
@@ -43,6 +43,18 @@ export default function Header() {
     e.preventDefault();
     navigate("/profile")
   }
+  
+const handleViewSavedJobs = () => {
+  if (!profileInfo) {
+    navigate("/login", {
+      state: { from: "/" },
+    });
+    return;
+  }
+
+  navigate("/");
+}
+
 
   return (
     <div className="fixed z-[1000] w-full border-b bg-white">
@@ -73,11 +85,14 @@ export default function Header() {
           <div className="flex h-[50px] items-center gap-5 lg:h-[60px] xl:gap-10">
             {userInfo ? (
               <>
-                <div className="flex items-center gap-1">
+                <div
+                  className="flex cursor-pointer items-center gap-1"
+                  onClick={handleViewSavedJobs}
+                >
                   <IoHeartOutline className="text-xl" />
-                  <a href="#" className="hidden font-medium md:block">
+                  <button className="hidden font-medium md:block">
                     Saved jobs
-                  </a>
+                  </button>
                 </div>
                 <div className="flex items-center gap-1">
                   <DropMenu
@@ -113,48 +128,23 @@ export default function Header() {
                       </nav>
                     )}
                   </DropMenu>
-
-                  {/* <DropMenu
-                    trigger={
-                      <div className="flex cursor-pointer items-center gap-1 p-1">
-                        <IoPersonOutline className="text-xl" />
-                        <p className="font-medium md:block">
-                          {userInfo.email}
-                        </p>
-                        <IoChevronDown className="text-xl" />
-                      </div>
-                    }
-                    pos={`right-[0px] top-[38px]`}
-                  >
-                    <nav className="flex cursor-pointer flex-col items-start">
-                      <button
-                        onClick={handleViewProfile}
-                        className="relative flex w-full items-center gap-x-2 border-b border-gray-200 bg-transparent px-3 py-2 font-medium hover:bg-[#f3f3fe]"
-                      >
-                        Profile
-                      </button>
-                      <button
-                        onClick={handleLogout}
-                        className="relative flex w-full items-center gap-x-2 bg-transparent px-3 py-2 font-medium hover:bg-[#f3f3fe]"
-                      >
-                        Log out
-                      </button>
-                    </nav>
-                  </DropMenu> */}
                 </div>
               </>
             ) : (
               <>
+                <div
+                  className="flex cursor-pointer items-center gap-1"
+                  onClick={handleViewSavedJobs}
+                >
+                  <IoHeartOutline className="text-xl" />
+                  <button className="hidden font-medium md:block">
+                    Saved jobs
+                  </button>
+                </div>
                 <div className="flex items-center gap-4">
                   <Link to={`/login`} className="font-medium">
                     Sign in
                   </Link>
-                </div>
-                <div className="flex items-center gap-1">
-                  <IoHeartOutline className="text-xl" />
-                  <a href="#" className="hidden font-medium md:block">
-                    Saved jobs
-                  </a>
                 </div>
               </>
             )}
