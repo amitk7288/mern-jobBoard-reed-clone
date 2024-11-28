@@ -225,7 +225,10 @@ export default function UserRegister() {
               <div className="my-4 text-center">
                 <p onClick={() => setShowReg(false)} className="cursor-pointer">
                   Already here?{" "}
-                  <span className="font-medium text-rdlightBlue underline">
+                  <span
+                    onClick={() => navigate(`/login`)}
+                    className="font-medium text-rdlightBlue underline"
+                  >
                     Sign in
                   </span>
                 </p>
