@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchJobById } from "../features/jobsSlice";
-import { toggleSave, updateProfile } from "../features/authSlice";
+import { toggleSave, applyToJob, updateProfile } from "../features/authSlice";
 import { useUpdateProfileMutation } from "../features/usersApiSlice";
 import JobSearch from "./JobSearch";
 import ModalDropDown from "../components/ui-components/ModalDropDown";
@@ -17,6 +17,7 @@ import {
 } from "react-icons/hi2";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import DOMPurify from "dompurify";
+import confetti from "canvas-confetti";
 
 export default function JobPage() {
   const dispatch = useDispatch();
@@ -35,20 +36,29 @@ export default function JobPage() {
     ),
   );
   const [updateSavedJobs] = useUpdateProfileMutation();
+  const appliedJobsData = useSelector(
+    (state) => state?.auth?.profileInfo?.profile?.appliedJobs,
+  );
+  const jobApplied = useSelector((state) =>
+    state?.auth?.profileInfo?.profile?.appliedJobs.some(
+      (job) => job.jobId === parseInt(jobId),
+    ),
+  );
+  const [updateAppliedJobs] = useUpdateProfileMutation();
   const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-      console.log("job saved?: ", jobSaved);
-      if (jobId) {
-        dispatch(fetchJobById(jobId));
-      } else {
-        console.log('not dispatched');
-      }
-    }, [dispatch, jobId]);
+  useEffect(() => {
+    console.log("job saved?: ", jobSaved);
+    if (jobId) {
+      dispatch(fetchJobById(jobId));
+    } else {
+      console.log('not dispatched');
+    }
+  }, [dispatch, jobId]);
 
-    useEffect(() => {
-      console.log(jobDetails);
-    }, [jobDetails]);
+  useEffect(() => {
+    console.log(jobDetails);
+  }, [jobDetails]);
 
 
   const {
@@ -103,6 +113,52 @@ export default function JobPage() {
           profile: {
             ...userInfo.profile,
             savedJobs: updatedSavedJobs,
+          },
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleApplyClick = async (jobDetails) => {
+    console.log("job: ", jobDetails);
+    console.log("job applied?: ", jobApplied);
+
+    if (!profileInfo) {
+      navigate("/login", {
+        state: { from: window.location.pathname },
+      });
+      return;
+    }
+
+    if (jobApplied) {
+      console.log("Job already applied, no action taken.");
+      return;
+    }
+
+    try {
+      dispatch(applyToJob(jobDetails));
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+
+      const updatedAppliedJobs = [...appliedJobsData, jobDetails];
+
+      const updateData = {
+        appliedJobs: updatedAppliedJobs,
+      };
+
+      await updateAppliedJobs(updateData).unwrap();
+
+      dispatch(
+        updateProfile({
+          ...userInfo,
+          profile: {
+            ...userInfo.profile,
+            appliedJobs: updatedAppliedJobs,
           },
         }),
       );
@@ -178,12 +234,30 @@ export default function JobPage() {
                           <p>{locationName}</p>
                         </div>
                       </div>
-                      <div>
+                      <div className="flex flex-col justify-center gap-3">
                         <button
-                          type="submit"
+                          onClick={() => handleApplyClick(jobDetails)}
                           className="mx-auto block w-[260px] rounded-md bg-[#cf04a9] px-3 py-2 font-medium text-white hover:bg-[#9f0885]"
                         >
-                          Apply now
+                          {jobApplied ? `Applied!` : `Apply now`}
+                        </button>
+                        <button
+                          onClick={() => handleSaveClick(jobDetails)}
+                          className="mx-auto flex w-[260px] items-center justify-center gap-1 rounded-md border-2 border-rdblack bg-[#ffffff] px-3 py-2 font-medium text-rdblack hover:bg-rdblack hover:text-white"
+                        >
+                          {jobSaved ? (
+                            <>
+                              <IoHeartSharp
+                                className={jobSaved && `text-rdpink`}
+                              />
+                              <p>Saved!</p>
+                            </>
+                          ) : (
+                            <>
+                              <IoHeartOutline className="text-lg" />
+                              <p>Save job</p>
+                            </>
+                          )}
                         </button>
                       </div>
                     </div>
@@ -193,29 +267,6 @@ export default function JobPage() {
                     <div
                       dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
                     ></div>
-                    <div className="flex flex-col justify-center gap-3">
-                      <button className="mx-auto block w-[260px] rounded-md bg-[#cf04a9] px-3 py-2 font-medium text-white hover:bg-[#9f0885]">
-                        Apply now
-                      </button>
-                      <button
-                        onClick={() => handleSaveClick(jobDetails)}
-                        className="mx-auto flex w-[260px] items-center justify-center gap-1 rounded-md border-2 border-rdblack bg-[#ffffff] px-3 py-2 font-medium text-rdblack hover:bg-rdblack hover:text-white"
-                      >
-                        {jobSaved ? (
-                          <>
-                            <IoHeartSharp
-                              className={jobSaved && `text-rdpink`}
-                            />
-                            <p>Saved!</p>
-                          </>
-                        ) : (
-                          <>
-                            <IoHeartOutline className="text-lg" />
-                            <p>Save job</p>
-                          </>
-                        )}
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
