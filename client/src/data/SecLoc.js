@@ -13,7 +13,6 @@ const secLoc = [
       id: 1,
       title: "Technology",
       img: tech,
-      link: "",
     },
     {
       id: 2,
@@ -32,7 +31,7 @@ const secLoc = [
       title: "Health",
       img: health,
       link: "",
-    }
+    },
   ],
   [
     {
@@ -58,8 +57,8 @@ const secLoc = [
       title: "Liverpool",
       img: liv,
       link: "",
-    }
+    },
   ],
-]
+];
 
 export default secLoc;

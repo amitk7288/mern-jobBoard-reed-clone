@@ -18,7 +18,7 @@ export default function SectorsLocations() {
   }
 
   return (
-    <div className="px-[23px] md:mx-[15px] md:px-[15px] lg:grid lg:justify-center flex flex-col gap-4">
+    <div className="py-[50px] px-[23px] md:mx-[15px] md:px-[15px] lg:grid lg:justify-center flex flex-col gap-4">
       <div className="flex justify-center gap-[30px] text-lg">
         <button
           onClick={handleClickSector}

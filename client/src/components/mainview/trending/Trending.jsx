@@ -6,7 +6,7 @@ import {
 
 export default function Trending() {
   return (
-    <div className="px-[23px]">
+    <div className="py-[50px] px-[23px]">
       <p className="my-5 text-center text-xl font-bold lg:text-3xl">
         Trending Jobs
       </p>
