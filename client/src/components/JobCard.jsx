@@ -17,6 +17,7 @@ import {
   RiTimeLine,
   RiMapPin2Line,
 } from "react-icons/ri";
+import confetti from "canvas-confetti";
 
 export default function JobCard({title, date, employer, max, min, loc, jobId, job}) {
   const dispatch = useDispatch();
@@ -105,6 +106,11 @@ export default function JobCard({title, date, employer, max, min, loc, jobId, jo
 
     try {
       dispatch(applyToJob(job));
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
 
       const updatedAppliedJobs = [...appliedJobsData, job];
 
