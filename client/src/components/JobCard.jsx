@@ -43,12 +43,12 @@ export default function JobCard({title, date, employer, max, min, loc, jobId, jo
   const [updateSavedJobs] = useUpdateProfileMutation();
   const [updateAppliedJobs] = useUpdateProfileMutation();
 
-  useEffect(() => {
-    console.log("SAVED JOBS: ", savedJobsData);
-  }, [savedJobsData]);
-  useEffect(() => {
-    console.log("APPLIED JOBS: ", appliedJobsData);
-  }, [appliedJobsData]);
+  // useEffect(() => {
+  //   console.log("SAVED JOBS: ", savedJobsData);
+  // }, [savedJobsData]);
+  // useEffect(() => {
+  //   console.log("APPLIED JOBS: ", appliedJobsData);
+  // }, [appliedJobsData]);
 
   const handleSaveClick = async (job) => {
     console.log("job: ", job);
