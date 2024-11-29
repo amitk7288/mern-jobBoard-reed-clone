@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import JobCard from "../components/JobCard";
 import JobSearch from "./JobSearch";
 import ModalDropDown from "../components/ui-components/ModalDropDown";
 import MobileJobSearch from "./MobileJobSearch";
+import { salaryFilter, dateFilter } from "../features/jobsSlice";
 
 import {
   HiMagnifyingGlass,
@@ -16,8 +17,11 @@ import {
 } from "react-icons/hi2";
 
 export default function JobResultsPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const jobResults = useSelector((state) => state.jobs.jobResults.results);
+  const filteredResults = useSelector(
+    (state) => state.jobs.filteredResults.results,
+  );
   const searchData = useSelector((state) => state.jobs.searchData);
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +31,7 @@ export default function JobResultsPage() {
 
   const startIndex = (currentPage - 1) * jobsPerPage;
   const endIndex = startIndex + jobsPerPage;
-  const currentJobs = jobResults?.slice(startIndex, endIndex);
+  const currentJobs = filteredResults?.slice(startIndex, endIndex);
 
   const handleNextPage = () => {
     if (currentJobs?.length === jobsPerPage) {
@@ -49,6 +53,28 @@ export default function JobResultsPage() {
       return formattedDate;
     } else {
       console.log("no job date");
+    }
+  };
+
+  const handleSalaryFilter = (salary) => {
+  const salaryNumber = Number(salary);
+   try {
+    dispatch(salaryFilter(salaryNumber));
+    console.log('dispatched!');
+    
+   } catch (error) {
+    console.log(error);
+    console.log("not dispatched!");
+   }
+  };
+
+  const handleDateFilter = (date) => {
+    try {
+      dispatch(dateFilter(date));
+      console.log("dispatched");
+    } catch (error) {
+      console.log(error);
+      console.log("not dispatched");
     }
   };
 
@@ -75,8 +101,8 @@ export default function JobResultsPage() {
               <p>Back</p>
             </button>
             <h1 className="text-lg font-bold">
-              Results: {jobResults?.length} {decodeURIComponent(keywords)}{" "}
-              {jobResults?.length > 1 ? `jobs` : `job`}
+              Results: {filteredResults?.length} {decodeURIComponent(keywords)}{" "}
+              {filteredResults?.length > 1 ? `jobs` : `job`}
             </h1>
           </div>
           <div className="mx-auto max-w-[1280px] md:flex md:gap-6">
@@ -106,167 +132,69 @@ export default function JobResultsPage() {
                       <div className="flex flex-col gap-3">
                         <div className="flex flex-col gap-1">
                           <label htmlFor="from-salary">From: </label>
-                          <select
-                            name="from-salary"
-                            id="from-salary"
-                            className="rounded-md border border-rdblack py-[5px] pl-[10px] pr-[20px]"
-                          >
-                            <option value="0">£ Any</option>
-                            <option value="10000">Up to £10,000</option>
-                            <option value="12000">£12,000</option>
-                            <option value="14000">£14,000</option>
-                            <option value="16000">£16,000</option>
-                            <option value="18000">£18,000</option>
-                            <option value="20000">£20,000</option>
-                            <option value="22000">£22,000</option>
-                            <option value="24000">£24,000</option>
-                            <option value="26000">£26,000</option>
-                            <option value="28000">£28,000</option>
-                            <option value="30000">£30,000</option>
-                            <option value="32000">£32,000</option>
-                            <option value="34000">£34,000</option>
-                            <option value="36000">£36,000</option>
-                            <option value="38000">£38,000</option>
-                            <option value="40000">£40,000</option>
-                            <option value="42000">£42,000</option>
-                            <option value="44000">£44,000</option>
-                            <option value="46000">£46,000</option>
-                            <option value="48000">£48,000</option>
-                            <option value="50000">£50,000</option>
-                            <option value="55000">£55,000</option>
-                            <option value="60000">£60,000</option>
-                            <option value="65000">£65,000</option>
-                            <option value="70000">£70,000</option>
-                            <option value="75000">£75,000</option>
-                            <option value="80000">£80,000</option>
-                            <option value="85000">£85,000</option>
-                            <option value="90000">£90,000</option>
-                            <option value="95000">£95,000</option>
-                            <option value="100000">£100,000+</option>
-                          </select>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <label htmlFor="to-salary">To: </label>
-                          <select
-                            name="to-salary"
-                            id="to-salary"
-                            className="rounded-md border border-rdblack py-[5px] pl-[10px] pr-[20px]"
-                          >
-                            <option value="0">£ Any</option>
-                            <option value="10000">Up to £10,000</option>
-                            <option value="12000">£12,000</option>
-                            <option value="14000">£14,000</option>
-                            <option value="16000">£16,000</option>
-                            <option value="18000">£18,000</option>
-                            <option value="20000">£20,000</option>
-                            <option value="22000">£22,000</option>
-                            <option value="24000">£24,000</option>
-                            <option value="26000">£26,000</option>
-                            <option value="28000">£28,000</option>
-                            <option value="30000">£30,000</option>
-                            <option value="32000">£32,000</option>
-                            <option value="34000">£34,000</option>
-                            <option value="36000">£36,000</option>
-                            <option value="38000">£38,000</option>
-                            <option value="40000">£40,000</option>
-                            <option value="42000">£42,000</option>
-                            <option value="44000">£44,000</option>
-                            <option value="46000">£46,000</option>
-                            <option value="48000">£48,000</option>
-                            <option value="50000">£50,000</option>
-                            <option value="55000">£55,000</option>
-                            <option value="60000">£60,000</option>
-                            <option value="65000">£65,000</option>
-                            <option value="70000">£70,000</option>
-                            <option value="75000">£75,000</option>
-                            <option value="80000">£80,000</option>
-                            <option value="85000">£85,000</option>
-                            <option value="90000">£90,000</option>
-                            <option value="95000">£95,000</option>
-                            <option value="100000">£100,000+</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div id="job type" className="border-b px-4 py-[15px]">
-                      <p className="pb-3 font-bold">Job type</p>
-                      <div className="flex flex-col gap-2 text-sm">
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            name="permanent"
-                            id="permanent"
-                          />
-                          <label htmlFor="permanent">
-                            Permanent <span>(268)</span>
-                          </label>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            name="temporary"
-                            id="temporary"
-                          />
-                          <label htmlFor="temporary">
-                            Temporary <span>(268)</span>
-                          </label>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            name="contract"
-                            id="contract"
-                          />
-                          <label htmlFor="contract">
-                            Contract <span>(268)</span>
-                          </label>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            name="full-time"
-                            id="full-time"
-                          />
-                          <label htmlFor="full-time">
-                            Full-time <span>(268)</span>
-                          </label>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            name="part-time"
-                            id="part-time"
-                          />
-                          <label htmlFor="part-time">
-                            Part-time <span>(268)</span>
-                          </label>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            name="work-from-home"
-                            id="work-from-home"
-                          />
-                          <label htmlFor="work-from-home">
-                            Work from home <span>(268)</span>
-                          </label>
+                          <div className="rounded-lg border border-rdblack pr-3">
+                            <select
+                              name="from-salary"
+                              id="from-salary"
+                              onChange={(e) =>
+                                handleSalaryFilter(e.target.value)
+                              }
+                              className="block w-full rounded-lg p-2.5"
+                            >
+                              <option value="0">£ Any</option>
+                              <option value="10000">From £10,000</option>
+                              <option value="12000">£12,000</option>
+                              <option value="14000">£14,000</option>
+                              <option value="16000">£16,000</option>
+                              <option value="18000">£18,000</option>
+                              <option value="20000">£20,000</option>
+                              <option value="22000">£22,000</option>
+                              <option value="24000">£24,000</option>
+                              <option value="26000">£26,000</option>
+                              <option value="28000">£28,000</option>
+                              <option value="30000">£30,000</option>
+                              <option value="32000">£32,000</option>
+                              <option value="34000">£34,000</option>
+                              <option value="36000">£36,000</option>
+                              <option value="38000">£38,000</option>
+                              <option value="40000">£40,000</option>
+                              <option value="42000">£42,000</option>
+                              <option value="44000">£44,000</option>
+                              <option value="46000">£46,000</option>
+                              <option value="48000">£48,000</option>
+                              <option value="50000">£50,000</option>
+                              <option value="55000">£55,000</option>
+                              <option value="60000">£60,000</option>
+                              <option value="65000">£65,000</option>
+                              <option value="70000">£70,000</option>
+                              <option value="75000">£75,000</option>
+                              <option value="80000">£80,000</option>
+                              <option value="85000">£85,000</option>
+                              <option value="90000">£90,000</option>
+                              <option value="95000">£95,000</option>
+                              <option value="100000">£100,000+</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div id="date posted" className="px-4 py-[15px]">
                       <div>
                         <p className="pb-3 font-bold">Date posted</p>
-                        <select
-                          name="date-posted"
-                          id="date-posted"
-                          className="w-full rounded-md border border-rdblack py-[5px] pl-[10px] pr-[20px]"
-                        >
-                          <option value="Anytime">Anytime</option>
-                          <option value="Today">Today</option>
-                          <option value="Last 3 days">Last 3 days</option>
-                          <option value="Last week">Last week</option>
-                          <option value="Last 2 weeks">Last 2 weeks</option>
-                        </select>
+                        <div className="rounded-lg border border-rdblack pr-3">
+                          <select
+                            name="date-posted"
+                            id="date-posted"
+                            onChange={(e) => handleDateFilter(e.target.value)}
+                            className="block w-full rounded-lg p-2.5"
+                          >
+                            <option value="Anytime">Anytime</option>
+                            <option value="Today">Today</option>
+                            <option value="Last 3 days">Last 3 days</option>
+                            <option value="Last week">Last week</option>
+                            <option value="Last 2 weeks">Last 2 weeks</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -324,7 +252,10 @@ export default function JobResultsPage() {
                     <p>
                       Page {currentPage} - Showing jobs{" "}
                       {currentPage * jobsPerPage - jobsPerPage + 1} -{" "}
-                      {Math.min(currentPage * jobsPerPage, jobResults?.length)}
+                      {Math.min(
+                        currentPage * jobsPerPage,
+                        filteredResults?.length,
+                      )}
                     </p>
                   </div>
                 </div>

@@ -14,6 +14,7 @@ import {
 } from "react-icons/ri";
 import {
   HiArrowLeftCircle,
+  HiMiniBolt,
 } from "react-icons/hi2";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import DOMPurify from "dompurify";
@@ -197,12 +198,12 @@ export default function JobPage() {
               <div id="main" className="flex flex-col gap-3">
                 <div className="flex flex-col gap-6 rounded-lg border border-[#c8c8c8] bg-white p-4 text-[#0f151a] md:w-[100%] md:px-[50px] md:py-[40px]">
                   {/* job info */}
-                  <div className="flex flex-col gap-16 lg:items-center lg:gap-8 lg:bg-[#f8f8f8] lg:py-7">
+                  <div className="flex flex-col gap-6 lg:items-center lg:gap-8 lg:bg-[#f8f8f8] lg:py-7">
                     <div className="flex flex-col gap-1 text-sm md:text-base lg:text-center">
                       <p className="text-xl font-bold text-rdblack md:text-4xl">
                         {jobTitle}
                       </p>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center md:justify-center gap-2">
                         <p>
                           Posted{" "}
                           {jobDetails?.datePosted
@@ -213,7 +214,10 @@ export default function JobPage() {
                           {employerName}
                         </span>
                       </div>
-                      <p className="font-bold text-[#4d5054]">Easy Apply</p>
+                      <div className="flex items-center md:justify-center gap-1">
+                        <HiMiniBolt className="text-[#FF00CD]" />
+                        <p className="text-[#4d5054] s:text-base font-bold">Easy Apply</p>
+                      </div>
                     </div>
                     <div className="flex flex-col gap-6 md:flex-row lg:items-center">
                       <div className="meta grid basis-[75%] grid-cols-1 gap-1 rounded-md bg-[#f8f8f8] p-4 md:grid-cols-3">
