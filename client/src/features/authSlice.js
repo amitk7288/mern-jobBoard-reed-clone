@@ -23,6 +23,11 @@ const authSlice = createSlice({
       state.registerInfo = null;
       state.profileInfo = null;
     },
+    continueWithGoogle: (state, action) => {
+      state.userInfo = action.payload;
+      state.registerInfo = action.payload;
+      state.profileInfo = action.payload;
+    },
     getProfile: (state, action) => {
       state.profileInfo = action.payload;
     },
@@ -98,6 +103,7 @@ export const {
   loginUser,
   registerUser,
   logoutUser,
+  continueWithGoogle,
   getProfile,
   updateProfile,
   addExperience,

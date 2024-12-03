@@ -23,6 +23,8 @@ export default function Header() {
   const { userInfo } = useSelector((state) => state.auth);
   const profileInfo = useSelector((state) => state?.auth?.profileInfo);
 
+  const profilePic = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
+
   const [logout] = useLogoutMutation();
 
   const handleLogout = async (e) => {
@@ -98,8 +100,16 @@ const handleViewSavedJobs = () => {
                   <DropMenu
                     trigger={
                       <div className="flex cursor-pointer items-center gap-1 p-1">
-                        <IoPersonOutline className="text-xl" />
-                        <p className="font-medium md:block">{userInfo.email}</p>
+                        <div className="flex items-center gap-2">
+                          <img
+                            className="w-6 rounded-full"
+                            src={userInfo.profilePic || profilePic}
+                            alt="profile-pic"
+                          />
+                          <p className="font-medium md:block">
+                            {userInfo.email}
+                          </p>
+                        </div>
                         <IoChevronDown className="text-xl" />
                       </div>
                     }

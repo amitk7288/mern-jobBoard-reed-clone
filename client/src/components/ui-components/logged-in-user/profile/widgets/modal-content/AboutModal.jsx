@@ -4,7 +4,7 @@ import { setAbout } from "../../../../../../features/profileSlice";
 import {useUpdateProfileMutation} from "../../../../../../features/usersApiSlice";
 import {updateProfile} from "../../../../../../features/authSlice";
 
-export default function AboutModal({ role, tel, name, email, closeModal }) {
+export default function AboutModal({ role, tel, name, email, profilePic, closeModal }) {
   const dispatch = useDispatch();
   const [updateAbout] = useUpdateProfileMutation();
   const { profileInfo } = useSelector((state) => state.auth);
@@ -37,12 +37,14 @@ export default function AboutModal({ role, tel, name, email, closeModal }) {
         role: roleField,
         tel: telField,
         email: emailField,
+        profilePic: profilePic,
       };
       await updateAbout(updateData).unwrap();
       dispatch(
         updateProfile({
           name: updateData.name,
           email: updateData.email,
+          profilePic: updateData.profilePic,
           profile: {
             ...profileInfo.profile,
             about: updateData,

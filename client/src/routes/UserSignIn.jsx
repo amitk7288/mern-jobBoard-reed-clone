@@ -2,14 +2,16 @@ import { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
+import OAuth from "../components/ui-components/OAuth";
 import {
   useLoginMutation,
   useGetProfileQuery,
 } from "../features/usersApiSlice";
 import { loginUser } from "../features/authSlice";
-import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import validator from "validator";
+
+const profilePic = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
 
 export default function UserSignIn() {
   const signInForm = useRef(null);
@@ -58,7 +60,7 @@ export default function UserSignIn() {
 
     try {
       const res = await login({ email, password }).unwrap();
-      dispatch(loginUser({ ...res }));
+      dispatch(loginUser({ ...res, profilePic }));
       const redirectPath = location.state?.from || "/";
       navigate(redirectPath);
     } catch (err) {
@@ -156,14 +158,9 @@ export default function UserSignIn() {
               <span></span>
             </div>
             <div>
-              <div className="cursor-pointer rounded-md border border-rdblack px-8 py-[15px]">
-                <div className="flex items-center justify-center gap-3">
-                  <img src={google} alt="Google" className="h-5 w-5" />
-                  <p className="font-bold">Continue with Google</p>
-                </div>
-              </div>
+              <OAuth />
               <div className="my-4 text-center">
-                <p onClick={() => setShowReg(true)} className="cursor-pointer">
+                <p className="cursor-pointer">
                   Don't have an account?{" "}
                   <span onClick={() => navigate(`/register`)} className="font-medium text-rdlightBlue underline">
                     Register

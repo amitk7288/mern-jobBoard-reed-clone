@@ -3,7 +3,7 @@ import CardSideScroll from "../CardSideScroll"
 import JobCard from "../../JobCard";
 
 export default function SavedJobs() {
-  const savedJobs = useSelector((state) => state.auth.profileInfo.profile.savedJobs);
+  const savedJobs = useSelector((state) => state.auth.profileInfo?.profile?.savedJobs);
   console.log('SAVED JOBS DATA: ', savedJobs);
 
   const formatDate = (jobDate) => {
