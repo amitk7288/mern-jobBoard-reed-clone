@@ -8,7 +8,6 @@ import {
   IoHeartOutline,
   IoMenuSharp,
   IoChevronDown,
-  IoPersonOutline,
 } from "react-icons/io5";
 import logo from "../../assets/reed-logo.webp";
 import SideMenu from "../ui-components/SideMenu";
@@ -46,16 +45,16 @@ export default function Header() {
     navigate("/profile")
   }
   
-const handleViewSavedJobs = () => {
-  if (!profileInfo) {
-    navigate("/login", {
-      state: { from: "/" },
-    });
-    return;
-  }
+  const handleViewSavedJobs = () => {
+    if (!profileInfo) {
+      navigate("/login", {
+        state: { from: "/" },
+      });
+      return;
+    }
 
-  navigate("/");
-}
+    navigate("/");
+  }
 
 
   return (
@@ -102,9 +101,14 @@ const handleViewSavedJobs = () => {
                       <div className="flex cursor-pointer items-center gap-1 p-1">
                         <div className="flex items-center gap-2">
                           <img
+                            src={
+                              userInfo.profilePic
+                                ? userInfo.profilePic
+                                : profilePic
+                            }
+                            alt="profilePic"
                             className="w-6 rounded-full"
-                            src={userInfo.profilePic || profilePic}
-                            alt="profile-pic"
+                            referrerPolicy="no-referrer"
                           />
                           <p className="font-medium md:block">
                             {userInfo.email}
