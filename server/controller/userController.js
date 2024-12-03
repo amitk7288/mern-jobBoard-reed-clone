@@ -31,7 +31,7 @@ const authUser = asyncHandler(async (req, res) => {
 // route POST api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, profilePic } = req.body;
 
   const userExists = await User.findOne({ email });
   if (userExists) {
@@ -44,6 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    profilePic,
   });
 
   const profile = await Profile.create({
@@ -76,6 +77,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      profilePic: user.profilePic,
       profile,
     });
   } else {
@@ -97,7 +99,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 // @desc Get user profile
-// route GET api/users/profile
+// route GET api/users/
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
   const profile = await Profile.findOne({ userId: req.user._id }).populate("userId", "name email");
@@ -114,7 +116,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 // @desc Update user profile
-// route PUT api/users/profile
+// route PUT api/users/
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
@@ -173,4 +175,78 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   res.status(200).json({ mssg: "Update user profile" });
 });
 
-export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile };
+// @desc Continue with Google
+// route POST api/users/login
+// route POST api/users/register
+// @access Public
+const continueWithGoogle = asyncHandler(async (req, res) => {
+  const { name, email, profilePic } = req.body;
+
+  try {
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      const profile = await Profile.findOne({ userId: userExists._id });
+
+      generateToken(res, userExists._id);
+      return res.status(200).json({
+        _id: userExists._id,
+        name: userExists.name,
+        email: userExists.email,
+        profilePic: userExists.profilePic,
+        profile,
+      });
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password: Math.random().toString(36).slice(-8),
+      profilePic,
+    });
+
+    const profile = await Profile.create({
+      userId: user._id,
+      about: {
+        role: "",
+        tel: "",
+      },
+      cv: "",
+      lookingFor: {
+        desiredJobTitle: "",
+        salary: "",
+        location: "",
+        jobType: "Full-time",
+      },
+      status: {
+        employmentStatus: "Employed Full-time",
+        noticePeriod: "",
+        workEligibility: false,
+      },
+      experience: [],
+      qualifications: [],
+      savedJobs: [],
+      appliedJobs: [],
+    });
+
+    if (user && profile) {
+      generateToken(res, user._id);
+      return res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePic: user.profilePic,
+        profile,
+      });
+    }
+
+    res.status(400);
+    throw new Error("Failed to create user or profile");
+  } catch (error) {
+    res.status(res.statusCode || 500);
+    throw new Error(error.message || "Server error");
+  }
+});
+
+
+export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, continueWithGoogle };

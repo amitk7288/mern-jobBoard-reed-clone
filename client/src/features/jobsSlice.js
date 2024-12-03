@@ -4,6 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   jobDetails: null,
   jobResults: [],
+  filteredResults: [],
   searchData: {
     whatVal: "",
     whereVal: "",

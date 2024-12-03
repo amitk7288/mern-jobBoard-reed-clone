@@ -2,12 +2,13 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
+import OAuth from "../components/ui-components/OAuth";
 import { useRegisterMutation } from "../features/usersApiSlice";
 import { registerUser } from "../features/authSlice";
-import google from "../assets/google.webp";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import validator from "validator";
 import { toast } from "react-toastify";
+import Profile from "../../../server/models/profileModel";
 
 export default function UserRegister() {
   const registerForm = useRef(null);
@@ -84,7 +85,11 @@ export default function UserRegister() {
       setPasswordsMatch(false);
     } else {
       try {
-        const res = await register({ name, email, password }).unwrap();
+        const res = await register({
+          name,
+          email,
+          password,
+        }).unwrap();
         dispatch(registerUser({ ...res }));
         toast.success("Profile created successfully");
         navigate("/login");
@@ -216,14 +221,9 @@ export default function UserRegister() {
               <span></span>
             </div>
             <div>
-              <div className="cursor-pointer rounded-md border border-rdblack px-8 py-[15px]">
-                <div className="flex items-center justify-center gap-3">
-                  <img src={google} alt="Google" className="h-5 w-5" />
-                  <p className="font-bold">Continue with Google</p>
-                </div>
-              </div>
+              <OAuth />
               <div className="my-4 text-center">
-                <p onClick={() => setShowReg(false)} className="cursor-pointer">
+                <p className="cursor-pointer">
                   Already here?{" "}
                   <span
                     onClick={() => navigate(`/login`)}

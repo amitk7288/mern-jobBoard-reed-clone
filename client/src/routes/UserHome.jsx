@@ -20,9 +20,9 @@ export default function UserHome() {
   const dispatch = useDispatch();
   const { profileInfo } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
-  const savedJobs = useSelector((state) => state.auth.profileInfo.profile.savedJobs);
+  const savedJobs = useSelector((state) => state.auth.profileInfo?.profile?.savedJobs);
   const appliedJobs = useSelector(
-    (state) => state.auth.profileInfo.profile.appliedJobs,
+    (state) => state.auth.profileInfo?.profile?.appliedJobs,
   );
 
   const { data: profileData, isSuccess, isLoading } = useGetProfileQuery();

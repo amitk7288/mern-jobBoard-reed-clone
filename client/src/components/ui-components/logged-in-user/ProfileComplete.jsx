@@ -5,7 +5,6 @@ import SectionCompleted from "./SectionCompleted";
 import Button from "../../ui-components/Button";
 import { Link, useLocation } from "react-router-dom";
 import { IoEllipseOutline, IoCheckmarkCircle } from "react-icons/io5";
-import { FaRegSmileWink } from "react-icons/fa";
 
 export default function ProfileComplete() {
   const dispatch = useDispatch();
@@ -27,6 +26,7 @@ export default function ProfileComplete() {
   const { experience } = profileInfo?.profile || {};
 
   console.log(profileInfo);
+  console.log('USER INFO: ', userInfo);
 
   useEffect(() => {
     if (userInfo.name && role && tel && userInfo.email) {
@@ -61,7 +61,7 @@ export default function ProfileComplete() {
       console.log("status false");
     }
 
-    if (experience.length > 0) {
+    if (experience?.length > 0) {
       dispatch(setExp(true));
       console.log("exp true");
     } else {
@@ -69,7 +69,7 @@ export default function ProfileComplete() {
       console.log("exp false");
     }
 
-    if (qualifications.length > 0) {
+    if (qualifications?.length > 0) {
       dispatch(setQual(true));
       console.log("qual true");
     } else {

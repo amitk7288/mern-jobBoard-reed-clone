@@ -39,6 +39,7 @@ app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => res.send("Server is ready"));
 
+// REED API calls
 app.get("/api/jobs/:jobId", async (req, res) => {
   try {
     console.log(`Fetching job ID: ${req.params.jobId}`);

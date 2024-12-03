@@ -3,7 +3,7 @@ import CardSideScroll from "../CardSideScroll"
 import JobCard from "../../JobCard";
 
 export default function AppliedJobs() {
-  const appliedJobs = useSelector((state) => state.auth.profileInfo.profile.appliedJobs);
+  const appliedJobs = useSelector((state) => state.auth.profileInfo?.profile?.appliedJobs);
 
   const formatDate = (jobDate) => {
     if (jobDate) {
