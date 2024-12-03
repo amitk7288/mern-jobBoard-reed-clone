@@ -9,7 +9,7 @@ export default function About() {
   const { profileInfo } = useSelector((state) => state.auth);
   const { role, tel } = profileInfo?.profile?.about || {};
 
-  const profilePic = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
+  //const profilePic = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
 
   return (
     <InfoPod
@@ -29,11 +29,11 @@ export default function About() {
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <p className="text-[20px] font-bold text-rdblack">{userInfo.name}</p>
-          <img
+          {/* <img
             className="w-10 rounded-full"
             src={profileInfo.profilePic ? profileInfo.profilePic : profilePic}
             alt="profile pic"
-          />
+          /> */}
         </div>
 
         <p className="text-base font-bold text-rdblack">{role}</p>
