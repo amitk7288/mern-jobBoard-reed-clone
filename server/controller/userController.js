@@ -19,6 +19,7 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      profilePic: user.profilePic,
       profile,
     });
   } else {
@@ -125,6 +126,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (user && profile) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
+    user.profilePic = req.body.profilePic || user.profilePic;
 
     const { role, tel, cv, desiredJobTitle, salary, location, jobType, employmentStatus, noticePeriod, workEligibility, experience, qualifications, savedJobs, appliedJobs } = req.body;
 
@@ -165,6 +167,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      profilePic: updatedUser.profilePic,
       profile: updatedProfile,
     });
   } else {
