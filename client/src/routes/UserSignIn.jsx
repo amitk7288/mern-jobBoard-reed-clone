@@ -60,7 +60,8 @@ export default function UserSignIn() {
 
     try {
       const res = await login({ email, password }).unwrap();
-      dispatch(loginUser({ ...res, profilePic }));
+      console.log(res);
+      dispatch(loginUser({ ...res }));
       const redirectPath = location.state?.from || "/";
       navigate(redirectPath);
     } catch (err) {
@@ -148,7 +149,7 @@ export default function UserSignIn() {
               type="submit"
               className={`cursor-pointer rounded-md bg-[#cf04a9] px-8 py-[15px] text-center font-medium text-white hover:bg-[#9f0885]`}
             >
-              {isLoading ? "Loggin you in..." : "Continue"}
+              {isLoading ? "Logging you in..." : "Continue"}
             </button>
           </form>
           <div id="other">

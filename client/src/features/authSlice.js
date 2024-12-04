@@ -1,10 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   userInfo: null,
   registerInfo: null,
   profileInfo: null,
 };
+
+export const uploadImgCloudinary = createAsyncThunk(
+  "auth/uploadImgCloudinary",
+  async (file) => {
+    const formData = new FormData();
+    console.log("File being uploaded:", file);
+    formData.append("image", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      throw new Error("Image upload failed");
+    }
+
+    const data = await res.json();
+    return data.file.path;
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -25,7 +46,7 @@ const authSlice = createSlice({
     },
     continueWithGoogle: (state, action) => {
       state.userInfo = action.payload;
-      state.registerInfo = action.payload;
+      state.registerInfo = null;
       state.profileInfo = action.payload;
     },
     getProfile: (state, action) => {
@@ -73,9 +94,11 @@ const authSlice = createSlice({
       );
 
       if (isAlreadySaved) {
-        state.profileInfo.profile.savedJobs = state.profileInfo.profile.savedJobs.filter(
-          (savedJob) => savedJob.jobId !== job.jobId);
-          console.log(`${job} removed`);
+        state.profileInfo.profile.savedJobs =
+          state.profileInfo.profile.savedJobs.filter(
+            (savedJob) => savedJob.jobId !== job.jobId,
+          );
+        console.log(`${job} removed`);
       } else {
         state.profileInfo.profile.savedJobs.push(job);
         console.log(`${job} added`);
@@ -96,6 +119,21 @@ const authSlice = createSlice({
         console.log(`${job} applied`);
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(uploadImgCloudinary.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(uploadImgCloudinary.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userInfo.profilePic = action.payload;
+        state.profileInfo.profilePic = action.payload;
+      })
+      .addCase(uploadImgCloudinary.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
   },
 });
 

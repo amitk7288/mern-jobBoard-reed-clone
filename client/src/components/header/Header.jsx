@@ -107,7 +107,7 @@ export default function Header() {
                                 : profilePic
                             }
                             alt="profilePic"
-                            className="w-6 rounded-full"
+                            className="w-6 h-6 rounded-full object-cover"
                             referrerPolicy="no-referrer"
                           />
                           <p className="font-medium md:block">
