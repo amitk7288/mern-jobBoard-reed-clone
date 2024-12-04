@@ -93,7 +93,7 @@ export default function JobSearch() {
             <input
               type="search"
               name="job-location"
-              placeholder={`town or postcode"`}
+              placeholder={`"town or postcode"`}
               value={where}
               onChange={(e) => setWhere(e.target.value)}
               className={`w-full rounded-md border border-rdblack px-4 py-2.5 lg:py-3 ${errorWhere ? `border border-red-500` : ``}`}
