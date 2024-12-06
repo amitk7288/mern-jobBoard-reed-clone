@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path";
 dotenv.config();
 import cookieParser from "cookie-parser";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
@@ -37,8 +38,6 @@ app.use(cors());
 app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
-
-app.get("/", (req, res) => res.send("Server is ready"));
 
 // REED API calls
 app.get("/api/jobs/:jobId", async (req, res) => {
@@ -102,6 +101,18 @@ app.post("/api/upload", uploadImg.single("image"), (req, res) => {
     res.status(500).json({ message: "Image upload failed" });
   }
 });
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "client", "dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  });
+}
+
+app.get("/", (req, res) => res.send("Server is ready"));
 
 app.use(notFound);
 app.use(errorHandler);
