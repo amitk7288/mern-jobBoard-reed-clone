@@ -24,6 +24,7 @@ export default function JobResultsPage() {
   );
   const searchData = useSelector((state) => state.jobs.searchData);
   const [isOpen, setIsOpen] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 10;
 
@@ -78,6 +79,11 @@ export default function JobResultsPage() {
     }
   };
 
+  const toggleFilter = (e) => {
+    e.preventDefault();
+    setShowFilter((prevState) => !prevState);
+  }
+
   return (
     <>
       <JobSearch />
@@ -110,24 +116,32 @@ export default function JobResultsPage() {
               id="filter"
               className="basis-[35%] lg:basis-[30%] xl:basis-[20%]"
             >
-              <div className="flex items-center justify-center gap-5 pb-[20px] md:flex-col">
-                <button className="flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] bg-white px-3 py-1.5 text-center font-medium text-[#081351] md:hidden">
+              <div className="flex items-center justify-start gap-5 pb-[20px] md:flex-col md:pb-[0px]">
+                <button
+                  className="flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] bg-white px-3 py-1.5 text-center font-medium text-[#081351] md:hidden"
+                  onClick={toggleFilter}
+                >
                   <HiAdjustmentsVertical className="text-xl" />
                   <p className="text-sm">Filter</p>
                 </button>
-                <button className="flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] bg-white px-3 py-1.5 text-center font-medium text-[#081351]">
+                {/* <button className="flex w-full max-w-[300px] items-center justify-center gap-1 rounded-[4px] border-2 border-[#081351] bg-white px-3 py-1.5 text-center font-medium text-[#081351]">
                   <HiOutlineBellAlert className="text-xl" />
                   <p className="text-sm">Job Alerts</p>
-                </button>
+                </button> */}
               </div>
               <div
-                id="filter your search"
-                className="hidden flex-col rounded-md border border-[#c8c8c8] bg-white py-2.5 pt-5 text-[#0f151a] md:flex"
+                id="filter-your-search"
+                className={`${
+                  showFilter ? `block` : `hidden`
+                } flex-col rounded-md border border-[#c8c8c8] bg-white py-2.5 pt-5 text-[#0f151a] md:block mb-[20px]`}
               >
                 <p className="px-3 text-lg font-bold">Filter your search</p>
                 <div>
                   <div id="filter options" className="">
-                    <div id="salary range" className="border-b px-4 py-[15px]">
+                    <div
+                      id="salary range"
+                      className="border-b px-4 py-[15px]"
+                    >
                       <p className="pb-3 font-bold">Salary range</p>
                       <div className="flex flex-col gap-3">
                         <div className="flex flex-col gap-1">
