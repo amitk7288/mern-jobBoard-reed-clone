@@ -109,7 +109,7 @@ export default function QualificationsModal({ closeModal }) {
             className="input-style"
           />
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row">
           <div className="flex flex-col">
             <label htmlFor="subject" className="label-style">
               Subject
