@@ -31,7 +31,7 @@ export default function DropMenu({ children, trigger, pos }) {
 
       {isOpen && (
         <div
-          className={`absolute z-[100] mt-2 w-full rounded-sm border border-gray-200 bg-white shadow-lg ${pos}`}
+          className={`absolute z-[100] mt-2 rounded-sm border border-gray-200 bg-white shadow-lg w-[150px] md:w-full ${pos}`}
         >
           {children(handleClose)}
         </div>
