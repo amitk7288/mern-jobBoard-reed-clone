@@ -73,7 +73,7 @@ export default function Search() {
       <div className="mx-auto max-w-[1220px]">
         <div className="max-w-[1220px] bg-[#081351] p-4 md:mx-[30px] md:rounded-lg md:px-6 lg:mx-0">
           <form
-            className="flex flex-col gap-5 md:flex-row md:items-center"
+            className="flex flex-col gap-3 md:gap-5 md:flex-row md:items-center"
             onSubmit={handleSubmit}
           >
             <div className="md:basis-[40%]">
@@ -97,8 +97,8 @@ export default function Search() {
                 Required field
               </p>
             </div>
-            <div className="hidden md:block md:basis-[40%]">
-              <label htmlFor="jobLocation" className="mb-1 text-lg text-white">
+            <div className="md:basis-[40%]">
+              <label htmlFor="jobLocation" className="mb-1 hidden text-lg text-white md:block">
                 Where
               </label>
               <input
