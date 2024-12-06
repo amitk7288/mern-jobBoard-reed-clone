@@ -110,7 +110,7 @@ export default function Header() {
                             className="w-6 h-6 rounded-full object-cover"
                             referrerPolicy="no-referrer"
                           />
-                          <p className="font-medium md:block">
+                          <p className="font-medium hidden md:block">
                             {userInfo.email}
                           </p>
                         </div>
