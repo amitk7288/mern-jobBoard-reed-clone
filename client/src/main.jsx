@@ -19,7 +19,6 @@ import UserSignIn from './routes/UserSignIn.jsx';
 import UserRegister from './routes/UserRegister.jsx';
 import UserProfile from './components/ui-components/logged-in-user/profile/UserProfile.jsx';
 import JobPage from './routes/JobPage.jsx';
-import ScrollToTop from './components/ui-components/ScrollToTop.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -48,7 +47,6 @@ createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
       <RouterProvider router={router}>
-        <ScrollToTop />
       </RouterProvider>
     </PersistGate>
   </Provider>,
