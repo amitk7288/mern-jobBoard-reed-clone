@@ -4,6 +4,8 @@ import {useSelector, useDispatch} from "react-redux";
 import { logoutUser } from "../../features/authSlice";
 import { setProfileDefaults } from "../../features/profileSlice";
 import { useLogoutMutation } from "../../features/usersApiSlice";
+import Modal from "../ui-components/Modal";
+import DemoLinkModal from "../ui-components/DemoLinkModal";
 import {
   IoHeartOutline,
   IoMenuSharp,
@@ -18,6 +20,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   const [isMobMenuOpen, setIsMobMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { userInfo } = useSelector((state) => state.auth);
   const profileInfo = useSelector((state) => state?.auth?.profileInfo);
@@ -56,6 +59,10 @@ export default function Header() {
     navigate("/");
   }
 
+  const handleRecruiterClick = () => {
+    setIsOpen(true);
+  }
+
 
   return (
     <div className="fixed z-[1000] w-full border-b bg-white">
@@ -76,8 +83,8 @@ export default function Header() {
               Jobs
             </a>
             <a
-              href="#"
-              className="hidden h-[50px] items-center justify-end gap-2 font-medium before:block before:h-[80%] before:border-l-[1px] before:border-[#9d9d9d] before:content-[''] lg:flex"
+              onClick={handleRecruiterClick}
+              className="hidden h-[50px] cursor-pointer items-center justify-end gap-2 font-medium before:block before:h-[80%] before:border-l-[1px] before:border-[#9d9d9d] before:content-[''] lg:flex"
             >
               <p className="font-normal">Recruting?</p>
               <span className="font-medium">Post a job</span>
@@ -107,10 +114,10 @@ export default function Header() {
                                 : profilePic
                             }
                             alt="profilePic"
-                            className="w-6 h-6 rounded-full object-cover"
+                            className="h-6 w-6 rounded-full object-cover"
                             referrerPolicy="no-referrer"
                           />
-                          <p className="font-medium hidden md:block">
+                          <p className="hidden font-medium md:block">
                             {userInfo.email}
                           </p>
                         </div>
@@ -174,17 +181,13 @@ export default function Header() {
             >
               <strong className="">Jobs</strong>
             </a>
-            <a
-              href="#"
-              className="flex h-[50px] w-full items-center justify-start gap-8 py-2 pr-[55px] font-medium before:block before:h-[100%]"
-            >
-              <div className="flex items-center gap-1">
-                <p className="font-normal">Recruting?</p>
-                <span className="font-medium">Post a job</span>
-              </div>
-            </a>
           </nav>
         </SideMenu>
+      )}
+      {isOpen && (
+        <Modal closeModal={() => setIsOpen(false)}>
+          <DemoLinkModal />
+        </Modal>
       )}
     </div>
   );

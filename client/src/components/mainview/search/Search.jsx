@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { searchJobsByCriteria } from "../../../features/jobsSlice";
+import Modal from "../../ui-components/Modal";
+import DemoLinkModal from "../../ui-components/DemoLinkModal";
 import { IoChevronForward } from "react-icons/io5";
 import jobHeroImg from "../../../assets/job-hero-img.png";
 import jobHeroTitle from "../../../assets/job-hero-title.svg";
@@ -13,6 +15,7 @@ export default function Search() {
   const [where, setWhere] = useState("");
   const [errorWhat, setErrorWhat] = useState(false);
   const [errorWhere, setErrorWhere] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleWhat = (e) => {
     setWhat(e.target.value);
@@ -73,7 +76,7 @@ export default function Search() {
       <div className="mx-auto max-w-[1220px]">
         <div className="max-w-[1220px] bg-[#081351] p-4 md:mx-[30px] md:rounded-lg md:px-6 lg:mx-0">
           <form
-            className="flex flex-col gap-3 md:gap-5 md:flex-row md:items-center"
+            className="flex flex-col gap-3 md:flex-row md:items-center md:gap-5"
             onSubmit={handleSubmit}
           >
             <div className="md:basis-[40%]">
@@ -98,7 +101,10 @@ export default function Search() {
               </p>
             </div>
             <div className="md:basis-[40%]">
-              <label htmlFor="jobLocation" className="mb-1 hidden text-lg text-white md:block">
+              <label
+                htmlFor="jobLocation"
+                className="mb-1 hidden text-lg text-white md:block"
+              >
                 Where
               </label>
               <input
@@ -117,7 +123,7 @@ export default function Search() {
             </div>
             <button
               type="submit"
-              className="md:mt-1.5 md:flex mb-[20px] rounded-md bg-[#cf04a9] px-3 py-2 font-medium text-white hover:bg-[#9f0885] md:mb-[0px] md:basis-[20%] md:justify-center md:self-center md:px-4 md:py-2.5 lg:py-3"
+              className="mb-[20px] rounded-md bg-[#cf04a9] px-3 py-2 font-medium text-white hover:bg-[#9f0885] md:mb-[0px] md:mt-1.5 md:flex md:basis-[20%] md:justify-center md:self-center md:px-4 md:py-2.5 lg:py-3"
             >
               Search jobs
             </button>
@@ -126,7 +132,9 @@ export default function Search() {
             href="#"
             className="flex items-center justify-end gap-1 font-medium text-white"
           >
-            <p className="hover:underline">Browse jobs</p>
+            <p onClick={() => setIsOpen(true)} className="hover:underline">
+              Browse jobs
+            </p>
             <IoChevronForward />
           </a>
         </div>
@@ -134,6 +142,11 @@ export default function Search() {
           <p>Search 150,098 new jobs - 6,055 added in the last 24 hours</p>
         </div>
       </div>
+      {isOpen && (
+        <Modal closeModal={() => setIsOpen(false)}>
+          <DemoLinkModal />
+        </Modal>
+      )}
     </div>
   );
 }

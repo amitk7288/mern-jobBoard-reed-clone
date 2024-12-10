@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import AuthButtons from "../components/ui-components/AuthButtons";
 import OAuth from "../components/ui-components/OAuth";
+import Modal from "../components/ui-components/Modal";
+import DemoLinkModal from "../components/ui-components/DemoLinkModal";
 import {
   useLoginMutation,
   useGetProfileQuery,
@@ -22,6 +24,7 @@ export default function UserSignIn() {
   const [password, setPassword] = useState("");
   const [passError, setPassError] = useState(false);
   const [formError, setFormError] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -134,8 +137,8 @@ export default function UserSignIn() {
                 </span>
               )}
               <a
-                href="#"
-                className="mt-1 text-right text-sm font-medium text-rdlightBlue"
+                onClick={() => setIsOpen(true)}
+                className="mt-1 cursor-pointer text-right text-sm font-medium text-rdlightBlue"
               >
                 Forgotten password?
               </a>
@@ -163,7 +166,10 @@ export default function UserSignIn() {
               <div className="my-4 text-center">
                 <p className="cursor-pointer">
                   Don't have an account?{" "}
-                  <span onClick={() => navigate(`/register`)} className="font-medium text-rdlightBlue underline">
+                  <span
+                    onClick={() => navigate(`/register`)}
+                    className="font-medium text-rdlightBlue underline"
+                  >
                     Register
                   </span>
                 </p>
@@ -172,6 +178,11 @@ export default function UserSignIn() {
           </div>
         </div>
       </div>
+      {isOpen && (
+        <Modal closeModal={() => setIsOpen(false)}>
+          <DemoLinkModal />
+        </Modal>
+      )}
     </div>
   );
 }
